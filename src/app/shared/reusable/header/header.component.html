@@ -1,0 +1,18 @@
+<header class="header-container">
+    <mat-form-field appearance="outline">
+        <mat-select placeholder="Select a user">
+          <mat-option *ngFor="let user of users" [value]="user.username">
+            <div class="user-option">
+              <mat-icon>person_pin</mat-icon>
+              <span>{{ user.username }}</span>
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+    <div class="flex-row">
+        <mat-icon class="icon-display">home</mat-icon>
+        <mat-icon class="icon-display">notifications_none</mat-icon>
+        <mat-icon class="icon-display">person_pin</mat-icon>
+    </div>
+</header>

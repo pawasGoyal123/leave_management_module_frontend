@@ -1,0 +1,5 @@
+<div class="sidebar">
+    <a class="sidebar-item" [routerLink]="[item.path]" [routerLinkActive]="'active'"  *ngFor="let item of routeData">
+        {{item.label}}
+    </a>
+</div>

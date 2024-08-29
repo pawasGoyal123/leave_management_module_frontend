@@ -1,0 +1,33 @@
+.header-container{
+    padding:6px 16px;
+    background-color: #F9FAFB;
+    width: 100%;
+    border-bottom: 1px solid #E8EBED;
+    display: flex;
+    gap:8px;
+    align-items: center;
+    justify-content: space-between;
+}
+.flex-row{
+    display: flex;
+    align-items: center;
+    gap:12px;
+}
+.icon-display {
+    transform: scale(1.2);
+ }
+
+   ng::deep mat-form-field{
+        margin: 0px !important;
+    }
+  .user-option {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  .user-option span {
+    font-size: 16px;
+    color: rgb(43, 52, 67);
+  }
+  

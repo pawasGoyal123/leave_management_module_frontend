@@ -1,0 +1,41 @@
+<div class="main-container">
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource1" matSort>
+      <!-- Month & Year Column -->
+      <ng-container matColumnDef="monthYear">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Month & Year</th>
+        <td mat-cell *matCellDef="let element">
+          {{element.month | date: 'MMM'}} {{element.year | date: 'yyyy'}}
+        </td>
+      </ng-container>
+
+      <!-- Available Column -->
+      <ng-container matColumnDef="available">
+        <th mat-header-cell *matHeaderCellDef>Available</th>
+        <td mat-cell *matCellDef="let element" class="centered">{{element.available}}</td>
+      </ng-container>
+
+      <!-- Accrued Column -->
+      <ng-container matColumnDef="accured">
+        <th mat-header-cell *matHeaderCellDef>Accrued</th>
+        <td mat-cell *matCellDef="let element" class="centered">{{element.accured}}</td>
+      </ng-container>
+
+      <!-- Consumed Column -->
+      <ng-container matColumnDef="consumed">
+        <th mat-header-cell *matHeaderCellDef>Consumed</th>
+        <td mat-cell *matCellDef="let element" class="centered">{{element.consumed}}</td>
+      </ng-container>
+
+      <!-- Balance Column -->
+      <ng-container matColumnDef="balance">
+        <th mat-header-cell *matHeaderCellDef>Balance</th>
+        <td mat-cell *matCellDef="let element" class="centered">{{element.available - element.consumed}}</td>
+      </ng-container>
+
+      <!-- Header and Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

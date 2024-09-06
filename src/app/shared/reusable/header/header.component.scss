@@ -30,4 +30,37 @@
     font-size: 16px;
     color: rgb(43, 52, 67);
   }
-  
+
+  .user-item{
+    padding:8px 12px;
+    white-space: nowrap;
+    font-size:14px;
+  }
+
+  p-dropdown{
+    padding:8px 12px;
+  }
+
+  ::ng-deep .p-inputwrapper{
+    padding:8px 12px;
+  }
+
+  .user-selected-item{
+    padding:0px !important;
+  }
+
+  .profile-logo{
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+    display: flex;
+    background-color: rgb(100, 188, 229);
+    border-width: 1px;
+    border-color: rgb(224, 245, 255);
+    color:white;
+  }
+
+
+

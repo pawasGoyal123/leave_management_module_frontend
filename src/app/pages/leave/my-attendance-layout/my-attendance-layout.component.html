@@ -1,10 +1,15 @@
-<h2 class="heading">My Attendance</h2>
-<div class="flex-row">
-    <div class="navigation-container">
-        <a [routerLink]="[item.path]" [routerLinkActive]="'active'" class="sidebar-item" *ngFor="let item of routeData">{{item.label}}</a>
+<div class="static-container">
+    <h2 class="heading">My Attendance</h2>
+    <div class="flex-row">
+        <div class="navigation-container">
+            <a [routerLink]="[item.path]"  [routerLinkActive]="'active'" class="navigation-item" *ngFor="let item of routeData">{{item.label}}</a>
+        </div>
+        <button class="btn">
+            <mat-icon >add</mat-icon>
+            <span>Leave Request</span>
+        </button>
     </div>
-    <button class="btn">
-        <mat-icon >add</mat-icon>
-        Leave Request
-    </button>
+</div>
+<div class="main-content-container">
+    <router-outlet></router-outlet>
 </div>

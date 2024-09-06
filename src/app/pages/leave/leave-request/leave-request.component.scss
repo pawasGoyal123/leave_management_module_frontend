@@ -1,0 +1,11 @@
+.layout-container{
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  ::ng-deep .full-width{
+    flex:1 1 0% !important;
+  }

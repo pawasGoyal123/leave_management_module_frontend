@@ -1,7 +1,8 @@
-.heading{
-    font-size: 17px;
-    color: rgb(43, 52, 67);
-    font-weight: 700;
+.parent-container{
+    display: flex;
+    flex-direction: column;
+    gap:8px;
+    padding:12px 16px;
 }
 
 .navigation-container{
@@ -35,41 +36,39 @@ a:hover{
     color:rgb(43, 52, 67);
 }
 
-.btn{
-    cursor: pointer;
-    padding: 7px 28px;
-    border-radius: 6px;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(125, 205, 40);
-    border:none;
-    color:white;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap:4px;
-}
-
 .flex-row{
     display: flex;
     align-items: center;
     gap:8px;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
-.btn span{
-    white-space: nowrap;
-}
-
-.main-content-container{
-    width: 100%;
-    overflow: none;
-    padding:12px 16px;
-}
-
-.static-container{
+.action-container{
     display: flex;
-    flex-direction: column;
-    padding:12px 16px;
+    align-items: center;
+    gap:8px;
 }
+
+.action-container button{
+    outline: none;
+    border:none;
+}
+
+.accept-btn {
+    background-color: rgb(7, 212, 7);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .reject-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }

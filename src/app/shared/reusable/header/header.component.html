@@ -1,18 +1,33 @@
 <header class="header-container">
-    <mat-form-field appearance="outline">
-        <mat-select placeholder="Select a user">
-          <mat-option *ngFor="let user of users" [value]="user.username">
-            <div class="user-option">
-              <mat-icon>person_pin</mat-icon>
-              <span>{{ user.username }}</span>
-            </div>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      
-    <div class="flex-row">
-        <mat-icon class="icon-display">home</mat-icon>
-        <mat-icon class="icon-display">notifications_none</mat-icon>
-        <mat-icon class="icon-display">person_pin</mat-icon>
-    </div>
+  <!-- <app-select-component [label]="'Select User'" [data]="users" [displayKey]="'name'" [valueKey]="'employeeCode'">
+    <ng-template let-item>
+      <div class="custom-option">
+        <strong>{{ item.name }}</strong>
+      </div>
+    </ng-template>
+  </app-select-component> -->
+
+  <p-dropdown
+    [options]="allUsers"
+    [(ngModel)]="currentUser"
+    optionLabel="name"
+    placeholder="Select a User"
+    (ngModelChange)="changeActiveUser()"
+    >
+    <ng-template pTemplate="selectedItem">
+      <div class="user-selected-item" *ngIf="currentUser">
+
+          <div>{{ currentUser.name }}</div>
+      </div>
+  </ng-template>
+    <ng-template let-user pTemplate="item">
+        <div class="user-item">{{'#'+user.employeeCode+'-'+user.name}}</div>
+       </ng-template
+  ></p-dropdown>
+
+  <div class="flex-row">
+    <mat-icon class="icon-display">error_outline</mat-icon>
+    <mat-icon class="icon-display">notifications_none</mat-icon>
+    <span class="profile-logo" *ngIf="currentUser">{{ProfileName}}</span>
+  </div>
 </header>

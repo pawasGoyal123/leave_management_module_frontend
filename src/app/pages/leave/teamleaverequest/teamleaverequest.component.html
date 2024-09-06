@@ -1,0 +1,22 @@
+<div class="parent-container">
+  <div class="flex-row">
+    <div class="navigation-container">
+      <a
+        [routerLink]="['/' + item.path]"
+        [routerLinkActive]="'active'"
+        class="navigation-item"
+        *ngFor="let item of routeData"
+        >{{ item.label }}</a
+      >
+    </div>
+  </div>
+  <app-dynamictable [data]="data" [columnMetaData]="columnMetaData">
+  </app-dynamictable>
+</div>
+<ng-template #actionContainer let-row="row">
+  <div class="action-container">
+    <button class="accept-btn" (click)="accept(row)">Accept</button>
+    <button class="reject-btn" (click)="reject(row)">Reject</button>
+  </div>
+</ng-template>
+

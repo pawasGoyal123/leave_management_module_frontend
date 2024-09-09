@@ -43,12 +43,12 @@ export class LeaveRegisterComponent implements AfterViewInit,OnInit,OnDestroy  {
           commonColumnClass:['flex-grow','secondary-col','start']
         },
         {
-          columnName: 'available',
-          label: "Available",
+          columnName:'accrued',
+          label:'Accured',
         },
         {
-          columnName:'accrued',
-          label:'Accured'
+          columnName: 'available',
+          label: "Available",
         },
         {
           columnName:'consumed',

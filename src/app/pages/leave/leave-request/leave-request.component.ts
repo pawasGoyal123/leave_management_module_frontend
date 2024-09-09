@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { User } from '../../../core/models/interfaces/User';
 import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
@@ -67,7 +67,7 @@ export class LeaveRequestComponent {
   ];
   private userSubscription!:Subscription;
 
-  constructor(private userService:CurrentUserService,private leaveService:LeaveService){};
+  constructor(private userService:CurrentUserService,private leaveService:LeaveService,private cd:ChangeDetectorRef){};
 
   ngAfterViewInit(){
     setTimeout(()=>{
@@ -104,6 +104,7 @@ export class LeaveRequestComponent {
         }
       ];
       this.columnMetaData=data;
+      this.cd.detectChanges();
     },0);
     
   }

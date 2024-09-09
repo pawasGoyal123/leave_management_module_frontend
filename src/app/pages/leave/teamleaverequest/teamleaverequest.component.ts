@@ -85,11 +85,11 @@ export class TeamleaverequestComponent implements OnInit,AfterViewInit{
         type: 'date', 
         commonColumnClass:['flex-grow'],
         typeArgs: ['dd-MMM-yyyy'], 
-        combineSeprator: '-' // Ensure correct spelling
+        combineSeprator: ' - ' // Ensure correct spelling
       },
       { label: 'First Half', columnName: 'firstHalf', type: 'boolean' },
       { label: 'Second Half', columnName: 'secondHalf', type: 'boolean' },
-      { label: 'Leave Reason', columnName: 'reason',rowColumnClass:['start'],hide:this.status!='Pending' },
+      { label: 'Leave Reason', columnName: 'reason',rowColumnClass:['text-start'],hide:this.status!='Pending' },
       { 
         columnName: 'action', 
         template: this.actionContainer, 

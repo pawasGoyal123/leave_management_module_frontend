@@ -1,29 +1,57 @@
 <mat-table [dataSource]="dataSource" class="custom-table">
+
   <!-- Column Definitions -->
-  <ng-container *ngFor="let column of columnMetaData;trackBy: trackByColumn" [matColumnDef]="column.columnName || 'combineData'">
-    <mat-header-cell *matHeaderCellDef [ngClass]="[getClass(column.headerColumnClass, column.commonColumnClass)]">
+  <ng-container *ngFor="let column of columnMetaData; trackBy: trackByColumn" [matColumnDef]="column.columnName || 'combineData'">
+    
+    <!-- Header Cell -->
+    <mat-header-cell 
+      *matHeaderCellDef 
+      [class]="getClass(column.headerColumnClass, column.commonColumnClass)">
       {{ column.label }}
     </mat-header-cell>
-    <mat-cell *matCellDef="let element" [ngClass]="[getClass(column.rowColumnClass, column.commonColumnClass), column.columnName && getStatusClass(column,element[column.columnName])]" [matTooltip]="getTooltipText(element, column)" [matTooltipPosition]="'right'">
-      <ng-container *ngIf="column.template">
-        <ng-container [ngTemplateOutlet]="getTemplate(column)" [ngTemplateOutletContext]="{row:element}"></ng-container>
-      </ng-container>
-      <ng-container *ngIf="column.combineData">
-        {{ combineData(element, column) }}
-      </ng-container>
-      <ng-container *ngIf="!column.template && !column.combineData">
-        <ng-container *ngIf="column.columnName && column.type != 'boolean'; else booleanData">
-          {{ element[column.columnName] | datapipe: getColumnType(column): getColumnTypeArgs(column) }}
+    
+    <!-- Data Cell -->
+    <mat-cell 
+      *matCellDef="let element" 
+      [class]="getClass(column.rowColumnClass, column.commonColumnClass)"
+
+      ngClass="column.columnName && getStatusClass(column, element[column.columnName])"
+      appTooltipOnOverflow 
+      [matTooltip]="getTooltipText(element, column)" 
+      [matTooltipPosition]="'left'"
+      [matTooltipDisabled]="!isOverflowing(content)" #content>
+      
+      <!-- Conditional Template Rendering -->
+      <ng-container *ngIf="column.template; else defaultData">
+        <ng-container 
+          [ngTemplateOutlet]="getTemplate(column)" 
+          [ngTemplateOutletContext]="{ row: element }">
         </ng-container>
-        <ng-template #booleanData>
-          <mat-icon *ngIf="element[column.columnName!]">done</mat-icon>
-          <mat-icon *ngIf="!element[column.columnName!]">remove_circle</mat-icon>
-        </ng-template>
       </ng-container>
+      
+      <!-- Default Data Rendering -->
+      <ng-template #defaultData>
+        <ng-container *ngIf="column.combineData">
+          {{ combineData(element, column) }}
+        </ng-container>
+
+        <ng-container *ngIf="!column.combineData">
+          <ng-container *ngIf="column.columnName && column.type !== 'boolean'; else booleanData">
+            {{ element[column.columnName] | datapipe: getColumnType(column): getColumnTypeArgs(column) }}
+          </ng-container>
+
+          <ng-template #booleanData>
+            <mat-icon *ngIf="column.columnName && element[column.columnName]">done</mat-icon>
+            <mat-icon *ngIf="column.columnName && !element[column.columnName]">remove_circle</mat-icon>
+          </ng-template>
+        </ng-container>
+      </ng-template>
+
     </mat-cell>
   </ng-container>
 
-  <!-- Header and Rows -->
+  <!-- Header and Rows Definitions -->
   <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
   <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+
 </mat-table>

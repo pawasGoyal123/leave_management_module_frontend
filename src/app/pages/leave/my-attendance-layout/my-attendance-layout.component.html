@@ -4,8 +4,8 @@
         <div class="navigation-container">
             <a [routerLink]="[item.path]"  [routerLinkActive]="'active'" class="navigation-item" *ngFor="let item of routeData">{{item.label}}</a>
         </div>
-        <button class="btn">
-            <mat-icon >add</mat-icon>
+        <button class="btn" (click)="openLeaveCreationDialog()">
+            <mat-icon>add</mat-icon>
             <span>Leave Request</span>
         </button>
     </div>

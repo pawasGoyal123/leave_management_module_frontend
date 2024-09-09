@@ -59,7 +59,9 @@ export class TeamleaverequestComponent implements OnInit,AfterViewInit{
     this.updateColumnMetaData();
     this.userService.currentUser$.subscribe(async(data)=>{
       if(data){
-        this.data=await lastValueFrom(this.leaveService.getTeamLeaveRequest(data.id,this.status));
+        this.leaveService.getTeamLeaveRequest(data.id,this.status).subscribe({
+          next:(teamLeaveRequest:TeamLeaveRequest[])=>this.data=teamLeaveRequest
+        })
       }
     })
     this.cdr.detectChanges(); // Ensure changes are detected
@@ -87,7 +89,7 @@ export class TeamleaverequestComponent implements OnInit,AfterViewInit{
       },
       { label: 'First Half', columnName: 'firstHalf', type: 'boolean' },
       { label: 'Second Half', columnName: 'secondHalf', type: 'boolean' },
-      { label: 'Leave Reason', columnName: 'reason' },
+      { label: 'Leave Reason', columnName: 'reason',rowColumnClass:['start'],hide:this.status!='Pending' },
       { 
         columnName: 'action', 
         template: this.actionContainer, 
@@ -113,7 +115,7 @@ export class TeamleaverequestComponent implements OnInit,AfterViewInit{
       width:'60%'
     })
     dialogRef.afterClosed().subscribe((data)=>{
-      if(data.action=='Confirm'){
+      if(data && data.action=='Confirm'){
         this.leaveService.updateLeaveRequest(element.id,'Approved',data.data).subscribe((_)=>this.removeLeaveFromList(element.id));
       }
     })
@@ -127,7 +129,7 @@ export class TeamleaverequestComponent implements OnInit,AfterViewInit{
       width:'60%'
     })
     dialogRef.afterClosed().subscribe((data)=>{
-      if(data.action=='Confirm'){
+      if(data && data.action=='Confirm'){
         this.leaveService.updateLeaveRequest(element.id,'Rejected',data.data).subscribe((_)=>this.removeLeaveFromList(element.id));
       }
     })
@@ -135,6 +137,6 @@ export class TeamleaverequestComponent implements OnInit,AfterViewInit{
 
   private removeLeaveFromList(leaveId: number) {
     this.data = this.data.filter(item => item.id !== leaveId);
-    this.cdr.detectChanges(); // Ensure the view updates
+    this.cdr.detectChanges();
   }
 }

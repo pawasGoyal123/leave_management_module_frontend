@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LeaveBalance } from '../../models/interfaces/leaveBalance';
-import { GET_LEAVE_REGISTER_BALANCE, GET_TEAM_LEAVE_REQUEST } from '../../constants/api.constants';
+import { GET_LEAVE_REGISTER_BALANCE, GET_TEAM_LEAVE_REGISTER, GET_TEAM_LEAVE_REQUEST } from '../../constants/api.constants';
 import { statusType, TeamLeaveRequest } from '../../models/interfaces/teamLeaveRequest';
 import { myLeaveRequest } from '../../models/interfaces/myLeaveRequest';
+import { TeamLeaveRegister } from '../../models/interfaces/TeamLeaveRegister';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,9 @@ export class LeaveService {
 
   getLeaveRequestsByEmployeeId(employeeId:number){
     return this.http.get<myLeaveRequest[]>(GET_TEAM_LEAVE_REQUEST+employeeId);
+  }
+
+  getTeamLeaveRegister(managerId:number){
+    return this.http.get<TeamLeaveRegister[]>(GET_TEAM_LEAVE_REGISTER+managerId);
   }
 }

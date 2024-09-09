@@ -20,7 +20,7 @@ import { DataPipe } from '../../pipes/datapipe.pipe';
 import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-import { statusType } from '../../../core/models/interfaces/teamLeaveRequest';
+import { TooltipOnOverflowDirective } from '../../directives/overflow.directive';
 
 @Component({
   selector: 'app-dynamictable',
@@ -32,8 +32,9 @@ import { statusType } from '../../../core/models/interfaces/teamLeaveRequest';
     DataPipe,
     MatTooltipModule,
     MatIconModule,
+    TooltipOnOverflowDirective
   ],
-  providers: [CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, DataPipe],
+  providers: [CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, DataPipe,TooltipOnOverflowDirective],
   templateUrl: './dynamictable.component.html',
   styleUrls: ['./dynamictable.component.scss'],
 })
@@ -94,13 +95,19 @@ export class DynamictableComponent implements OnInit, OnChanges {
     return column.template || null;
   }
 
-  getClass(...classes: (string | string[] | undefined)[]): string {
-    return classes
-      .filter((item): item is string | string[] => Boolean(item))
-      .flatMap((item) => (Array.isArray(item) ? item : [item]))
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .join(' ');
-  }
+  getClass(...classes: (string | string[] | undefined | null)[]): string {
+    const validClasses = classes
+        .filter(item => item != null && item!=undefined)  
+        .flatMap(item => 
+            typeof item === 'string' ? [item] : 
+            Array.isArray(item) ? item : []
+        ).filter((value, index, self) => typeof value === 'string' && self.indexOf(value) === index);
+    
+    return validClasses.join(' ');
+}
+
+
+
 
   combineData(element: any, column: columnMetaDataType): string {
     if (!column.combineData) return '';
@@ -147,6 +154,10 @@ export class DynamictableComponent implements OnInit, OnChanges {
       return `status-${value.toLowerCase()}`;
     }
     return '';
+  }
+
+  isOverflowing(element:any){
+    return (element.offsetWidth < element.scrollWidth)
   }
   
 }

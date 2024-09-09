@@ -1,6 +1,6 @@
 .layout-container{
     display: flex;
-    min-height: 100dvh;
+    min-height: 100%;
     width: 100%;
     flex-direction: column;
 }
@@ -11,4 +11,5 @@
 
 .main-content-container{
     width: 100%;
+    height: auto;
 }

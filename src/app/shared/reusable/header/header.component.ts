@@ -20,7 +20,28 @@ import { getUserProfileName } from '../../utils/getUserProfileName';
 export class HeaderComponent implements OnInit,OnDestroy {
   currentUser:(User| null)=null;
   private userSubscription!:Subscription;
-  allUsers:(User[])=[];
+  allUsers:(User[])=[
+    {
+        "id": 1,
+        "name": "Ashu Garg",
+        "employeeCode": "E001"
+    },
+    {
+        "id": 2,
+        "name": "Gaurav Parasher",
+        "employeeCode": "E002"
+    },
+    {
+        "id": 3,
+        "name": "Dev Varshney",
+        "employeeCode": "E003"
+    },
+    {
+        "id": 4,
+        "name": "Sukrit Kaur Oberoi",
+        "employeeCode": "E004"
+    }
+];
 
   constructor(private userService:CurrentUserService){};
 

@@ -19,7 +19,51 @@ export class LeaveRequestComponent {
   @ViewChild('buttonRef') buttonRef!: TemplateRef<any>;
   columnMetaData: columnMetaDataType[]=[];
   leaveData:myLeaveRequest[]=[
-  
+    {
+      id: 1,
+      fromDate: new Date('2024-08-15'),
+      toDate: new Date('2024-08-15'),
+      firstHalf: true,
+      secondHalf: false,
+      status: 'Pending',
+      managerComment: null,
+    },
+    {
+      id: 2,
+      fromDate: new Date('2024-09-01'),
+      toDate: new Date('2024-09-05'),
+      firstHalf: false,
+      secondHalf: true,
+      status: 'Approved',
+      managerComment: 'Enjoy your time off!',
+    },
+    {
+      id: 3,
+      fromDate: new Date('2024-07-20'),
+      toDate: new Date('2024-07-20'),
+      firstHalf: false,
+      secondHalf: true,
+      status: 'Rejected',
+      managerComment: 'Insufficient leave balance.',
+    },
+    {
+      id: 4,
+      fromDate: new Date('2024-10-10'),
+      toDate: new Date('2024-10-12'),
+      firstHalf: true,
+      secondHalf: false,
+      status: 'Pending',
+      managerComment: null,
+    },
+    {
+      id: 5,
+      fromDate: new Date('2024-11-15'),
+      toDate: new Date('2024-11-18'),
+      firstHalf: false,
+      secondHalf: true,
+      status: 'Approved',
+      managerComment: 'Approved. Please plan your work accordingly.',
+    },
   ];
   private userSubscription!:Subscription;
 
@@ -55,7 +99,8 @@ export class LeaveRequestComponent {
         {
           columnName: 'managerComment',
           label: 'Manager Comment',
-          commonColumnClass:['flex-grow']
+          commonColumnClass:['overflow-content'],
+          rowColumnClass:[]
         }
       ];
       this.columnMetaData=data;
@@ -66,8 +111,10 @@ export class LeaveRequestComponent {
   ngOnInit(): void {
     this.userSubscription=this.userService.currentUser$.subscribe(async(data)=>{
       if(data){
-        this.leaveData=await firstValueFrom(this.leaveService.getLeaveRequestsByEmployeeId(data.id));
-      
+        this.leaveService.getLeaveRequestsByEmployeeId(data.id).subscribe({
+          next:(leaveData:myLeaveRequest[])=>this.leaveData=leaveData,
+          error:(error:any)=>console.log(error)
+        })
       }
     })
   }

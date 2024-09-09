@@ -71,7 +71,6 @@ export class LeaveRegisterComponent implements AfterViewInit,OnInit,OnDestroy  {
     this.userSubscription=this.userService.currentUser$.subscribe(async(data)=>{
       if(data){
         this.leaveData=await firstValueFrom(this.leaveService.getLeaveBalance(data.id));
-        console.log(this.leaveData);
       
       }
     })

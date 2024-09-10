@@ -31,7 +31,7 @@
       <button (click)="toggleDisplay()" >
         <mat-icon class="icon-display">notifications_none</mat-icon>
       </button>
-      <span class="counter" *ngIf="notificationData.length>0" >{{notificationData.length}}</span>
+      <span class="counter" *ngIf="unreadCount>0" >{{unreadCount}}</span>
     </div>
     <span class="profile-logo" *ngIf="currentUser">{{ ProfileName }}</span>
   </div>

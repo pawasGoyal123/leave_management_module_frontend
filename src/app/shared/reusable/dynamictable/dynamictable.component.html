@@ -64,4 +64,9 @@
       <img src="./images/nodata.png" class="no-data" alt="">
     </div>
   </ng-template>
+
+  <mat-paginator #paginator [pageSize]="pageSize" [length]="totalSize" (page)="onPageChange($event)" [pageIndex]="getCurrentPage" [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+  aria-label="Select page for Table Data">
+</mat-paginator>
 </div>

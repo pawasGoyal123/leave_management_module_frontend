@@ -25,6 +25,39 @@ import { LeaveService } from '../../../core/services/leave/leave.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AcceptleaverequestComponent } from './components/acceptleaverequest/acceptleaverequest/acceptleaverequest.component';
 
+
+function generateLeaveRequests(num:number):TeamLeaveRequest[] {
+  const leaveRequests:TeamLeaveRequest[] = [];
+  const reasons = [
+    "Family function",
+    "Medical leave",
+    "Personal reasons",
+    "Vacation",
+    "Emergency",
+    "Work from home",
+    "Training",
+    "Other",
+  ];
+
+  for (let i = 1; i <= num; i++) {
+    const fromDate = new Date(2024, 6, 12); // July is month 6 (0-indexed)
+    const toDate = new Date(2024, 6, 12);
+    
+    leaveRequests.push({
+      id: i,
+      employeeName: `Employee ${i}`,
+      fromDate: fromDate,
+      toDate: toDate,
+      firstHalf: Math.random() < 0.5, // Random boolean
+      secondHalf: Math.random() < 0.5, // Random boolean
+      reason: reasons[Math.floor(Math.random() * reasons.length)],
+      statusChangeDate: new Date(),
+      status: Math.random() < 0.5 ? "Approved" : "Pending", // Random status
+    });
+  }
+
+  return leaveRequests;
+}
 @Component({
   selector: 'app-teamleaverequest',
   standalone: true,
@@ -53,7 +86,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe((params) => {
       const status = params.get('status');
-      this.setStatus(status); // Ensure to wait for the status to be set and data to be fetched
+      this.setStatus(status);
     });
   }
 
@@ -70,11 +103,11 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
         this.leaveService.getTeamLeaveRequest(data.id, this.status).subscribe({
           next: (teamLeaveRequest: TeamLeaveRequest[]) =>
             {this.data=teamLeaveRequest;this.isLoading=false;},
-          error:(error:any)=>{this.data=[];this.isLoading=false;}
+          error:(error:any)=>{this.data=generateLeaveRequests(200);this.isLoading=false;}
         });
       }
     });
-    this.cdr.detectChanges(); // Ensure changes are detected
+    this.cdr.detectChanges();
   }
 
   private mapStatus(status: string | null): statusType {

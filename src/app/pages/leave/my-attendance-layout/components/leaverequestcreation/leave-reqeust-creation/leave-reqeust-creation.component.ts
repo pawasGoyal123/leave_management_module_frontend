@@ -43,7 +43,7 @@ export class LeaveReqeustCreationComponent implements OnInit {
   name:string='';
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,private formBuilder:FormBuilder,private leaveService:LeaveService,private dialogRef:MatDialogRef<LeaveReqeustCreationComponent>){};
   leaveRequestCreationForm!:FormGroup;
-  leaveTypes:any[]=[];
+  leaveTypes:any[]=[{leaveType:'Sick Leave'}];
   leaveDurationData:any[]=[
     {
       label:'Full Day',

@@ -6,6 +6,8 @@ import {
   SimpleChanges,
   TemplateRef,
   ChangeDetectorRef,
+  ViewChild,
+  AfterViewInit,
 } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,6 +23,8 @@ import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDa
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { TooltipOnOverflowDirective } from '../../directives/overflow.directive';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-dynamictable',
@@ -32,35 +36,40 @@ import { TooltipOnOverflowDirective } from '../../directives/overflow.directive'
     DataPipe,
     MatTooltipModule,
     MatIconModule,
-    TooltipOnOverflowDirective
+    TooltipOnOverflowDirective,
+    MatPaginatorModule
   ],
-  providers: [CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, DataPipe,TooltipOnOverflowDirective],
+  providers: [CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, DataPipe, TooltipOnOverflowDirective],
   templateUrl: './dynamictable.component.html',
   styleUrls: ['./dynamictable.component.scss'],
 })
-export class DynamictableComponent implements OnInit, OnChanges {
+export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() data: any[] = [];
   @Input() columnMetaData: columnMetaDataType[] = [];
   columnsToDisplay: string[] = [];
-  @Input() loading!:boolean;
+  @Input() loading!: boolean;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  public pageSize: number = 10;
+  public totalSize: number = 0;
+  public getCurrentPage: number = 0;
 
   dataSource!: MatTableDataSource<any>;
 
-  constructor(private datapipe: DataPipe,private cd:ChangeDetectorRef) {}
+  constructor(private datapipe: DataPipe, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.setupTable();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['columnMetaData'] || changes['data']) {
-      setTimeout(()=>{this.setupTable();},0);
-      console.log('Hello i was called');
-    }
-    
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
   }
 
-  
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['columnMetaData'] || changes['data']) {
+      setTimeout(() => { this.setupTable(); }, 0);
+    }
+  }
 
   setupTable() {
     this.columnMetaData.sort((a, b) => {
@@ -74,7 +83,7 @@ export class DynamictableComponent implements OnInit, OnChanges {
       return 0;
     });
 
-    // Automatically generate columns to display based on columnMetaData
+    // Automatically generate columns to display based onMetaData
     const sortedColumns = this.columnMetaData
       .filter((ele) => !ele.hide)
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
@@ -83,7 +92,31 @@ export class DynamictableComponent implements OnInit, OnChanges {
     // Set up data source
     this.columnsToDisplay = [...sortedColumns];
     this.dataSource = new MatTableDataSource(this.data);
+    this.totalSize = this.data.length;
+
+    // Assign paginator to dataSource
+    this.dataSource.paginator = this.paginator;
+
+    // Initialize pagination
+    this.iterator();
+
     this.cd.detectChanges();
+  }
+
+  onPageChange(event: PageEvent) {
+    console.log(event)
+    this.getCurrentPage = event.pageIndex; // Update current page index
+    this.pageSize = event.pageSize; // Update page size
+
+    // Update the displayed data based on the new page
+    this.iterator();
+  }
+
+  iterator() {
+    const end = (this.getCurrentPage + 1) * this.pageSize;
+    const start = this.getCurrentPage * this.pageSize;
+    const part = this.data.slice(start, end);
+    this.dataSource = new MatTableDataSource(part);
   }
 
   getColumnType(column: columnMetaDataType) {
@@ -100,17 +133,14 @@ export class DynamictableComponent implements OnInit, OnChanges {
 
   getClass(...classes: (string | string[] | undefined | null)[]): string {
     const validClasses = classes
-        .filter(item => item != null && item!=undefined)  
-        .flatMap(item => 
-            typeof item === 'string' ? [item] : 
-            Array.isArray(item) ? item : []
-        ).filter((value, index, self) => typeof value === 'string' && self.indexOf(value) === index);
-    
+      .filter(item => item != null && item != undefined)
+      .flatMap(item =>
+        typeof item === 'string' ? [item] :
+          Array.isArray(item) ? item : []
+      ).filter((value, index, self) => typeof value === 'string' && self.indexOf(value) === index);
+
     return validClasses.join(' ');
-}
-
-
-
+  }
 
   combineData(element: any, column: columnMetaDataType): string {
     if (!column.combineData) return '';
@@ -152,20 +182,16 @@ export class DynamictableComponent implements OnInit, OnChanges {
     return column.columnName || index.toString();
   }
 
-  getStatusClass(column:columnMetaDataType,value:string | undefined){
-    let ans='';
-    if(column.type==='status' && value){
-      ans+=`status-${value.toLowerCase()}`;
+  getStatusClass(column: columnMetaDataType, value: string | undefined) {
+    let ans = '';
+    if (column.type === 'status' && value) {
+      ans += `status-${value.toLowerCase()}`;
     }
     return ans;
   }
 
-  isOverflowing(element:any){
-
-    const ans=(element.offsetWidth < element.scrollWidth);
+  isOverflowing(element: any) {
+    const ans = (element.offsetWidth < element.scrollWidth);
     return ans;
   }
-  
 }
-
-

@@ -10,7 +10,7 @@
       >
     </div>
   </div>
-  <app-dynamictable [data]="data" [columnMetaData]="columnMetaData">
+  <app-dynamictable [data]="data" [loading]="isLoading" [columnMetaData]="columnMetaData">
   </app-dynamictable>
 </div>
 <ng-template #actionContainer let-row="row">

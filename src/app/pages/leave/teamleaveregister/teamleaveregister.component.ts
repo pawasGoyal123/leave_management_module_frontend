@@ -15,19 +15,18 @@ import { User } from '../../../core/models/interfaces/User';
   styleUrl: './teamleaveregister.component.scss'
 })
 export class TeamleaveregisterComponent implements OnInit {
-  initialData:TeamLeaveRegister[]=[{
-    name:'Pawas Goyal',
-    employeeCode:'APS-31714',
-    availableLeaves:10.0
-  }]
+  data:TeamLeaveRegister[]=[];
+  isLoading:boolean=false;
 
   constructor(private leaveService:LeaveService,private userService:CurrentUserService){};
 
     ngOnInit() {
       this.userService.currentUser$.subscribe((currentUser:User|null)=>{
         if(currentUser){
+          this.isLoading=true;
           this.leaveService.getTeamLeaveRegister(currentUser.id).subscribe({
-            next:(teamLeaveRegisterData:TeamLeaveRegister[])=>this.initialData=teamLeaveRegisterData
+            next:(teamLeaveRegisterData:TeamLeaveRegister[])=>{this.data=teamLeaveRegisterData;this.isLoading=false},
+            error:(error:any)=>{this.data=[];this.isLoading=false;}
           })
         }
       })

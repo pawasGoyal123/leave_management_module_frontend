@@ -4,7 +4,8 @@
 .sidebar{
     border-right:1px solid #E8EBED;
     background-color: #F9FAFB;
-    height: 100vh;
+    height:100%;
+    overflow: none;
     display: flex;
     flex-direction: column;
     gap:2px;
@@ -36,7 +37,7 @@ a:hover{
 }
 
 .sidebar-container{
-    height: 50%;
+    height: 40%;
     display: flex;
     flex-direction: column;
     gap:2px;

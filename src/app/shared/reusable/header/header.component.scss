@@ -2,6 +2,7 @@
     padding:6px 16px;
     background-color: #F9FAFB;
     width: 100%;
+    display: fixed;
     border-bottom: 1px solid #E8EBED;
     display: flex;
     gap:8px;
@@ -62,5 +63,35 @@
     color:white;
   }
 
+  ::ng-deep .overlay-class{
+    inset: 0;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.768);
+    display: flex !important;
+    justify-content: flex-end !important;
+  }
+
+  .parent-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .counter{
+    position: absolute;
+    top:-4px;
+    right:-4px;
+    background-color: blue;
+    padding:2px;
+    height: 20px;
+    aspect-ratio: 1 / 1;
+    color:white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 99999px;
+    font-size:12px;
+  }
 
 

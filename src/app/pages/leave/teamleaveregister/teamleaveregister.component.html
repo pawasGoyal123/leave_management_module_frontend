@@ -1,8 +1,5 @@
 <div class="layout-container">
     <h2 class="heading" >Team Leave Register</h2>
-    <app-dynamictable  [data]="initialData" [columnMetaData]="columnMetaData" ></app-dynamictable>
-    <ng-template #noData>
-      No Data could be found for the currentUser or no User has been selected
-    </ng-template>
+    <app-dynamictable  [data]="data" [loading]="isLoading" [columnMetaData]="columnMetaData" ></app-dynamictable>
   </div>
   

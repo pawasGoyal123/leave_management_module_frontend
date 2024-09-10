@@ -1,0 +1,24 @@
+<div class="wrapper">
+  <div class="notification-list">
+    <div class="top-container">
+      <h2 class="heading">Notifications({{notifications.length}})</h2>
+      <div class="flex-container">
+        <button (click)="onClose()"><mat-icon>close</mat-icon></button>
+      </div>
+    </div>
+    <div class="notification-container">
+      <ng-template [ngIf]="!loading">
+        <div class="notification" (click)="markRead(item)" *ngFor="let item of notifications">
+          <span class="content">{{item.content}}</span>
+          <div class="flex-container">
+            <span class="date">{{item.create_date | timeago}}</span>
+            <span class="dot" [ngClass]="{'active':!item.status}"></span>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template [ngIf]="loading">
+        <div class="container"><span class="loader"></span></div>
+      </ng-template>
+    </div>
+  </div>
+</div>

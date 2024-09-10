@@ -44,6 +44,15 @@ export class LeaveService {
   }
 
   createLeaveRequest(data:leaveRequestCreationData,employeeId:number){
-    return this.http.post(GET_TEAM_LEAVE_REQUEST,{...data,employeeId});
+    return this.http.post(GET_TEAM_LEAVE_REQUEST,{
+      "duration": "Full Day",
+      "employeeId": 3,
+      "firstHalf": true,
+      "fromDate": "2024-09-01",
+      "leaveTypeName": "Casual Leave",
+      "reason": "vjvhjvgyhjbjkh",
+      "secondHalf": true,
+      "toDate": "2024-09-03"
+  });
   }
 }

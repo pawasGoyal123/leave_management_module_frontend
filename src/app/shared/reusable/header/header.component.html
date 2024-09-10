@@ -13,21 +13,28 @@
     optionLabel="name"
     placeholder="Select a User"
     (ngModelChange)="changeActiveUser()"
-    >
+  >
     <ng-template pTemplate="selectedItem">
       <div class="user-selected-item" *ngIf="currentUser">
-
-          <div>{{ currentUser.name }}</div>
+        <div>{{ currentUser.name }}</div>
       </div>
-  </ng-template>
+    </ng-template>
     <ng-template let-user pTemplate="item">
-        <div class="user-item">{{'#'+user.employeeCode+'-'+user.name}}</div>
-       </ng-template
-  ></p-dropdown>
+      <div class="user-item">
+        {{ "#" + user.employeeCode + "-" + user.name }}
+      </div>
+    </ng-template></p-dropdown
+  >
 
   <div class="flex-row">
-    <mat-icon class="icon-display">error_outline</mat-icon>
-    <mat-icon class="icon-display">notifications_none</mat-icon>
-    <span class="profile-logo" *ngIf="currentUser">{{ProfileName}}</span>
+    <div class="parent-container">
+      <button (click)="toggleDisplay()" >
+        <mat-icon class="icon-display">notifications_none</mat-icon>
+      </button>
+      <span class="counter" *ngIf="notificationData.length>0" >{{notificationData.length}}</span>
+    </div>
+    <span class="profile-logo" *ngIf="currentUser">{{ ProfileName }}</span>
   </div>
 </header>
+
+<app-notification *ngIf="showNotification()" (close)="toggleDisplay()" ></app-notification>

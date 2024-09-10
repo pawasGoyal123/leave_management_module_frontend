@@ -42,10 +42,11 @@ export class DynamictableComponent implements OnInit, OnChanges {
   @Input() data: any[] = [];
   @Input() columnMetaData: columnMetaDataType[] = [];
   columnsToDisplay: string[] = [];
+  @Input() loading!:boolean;
 
   dataSource!: MatTableDataSource<any>;
 
-  constructor(private datapipe: DataPipe) {}
+  constructor(private datapipe: DataPipe,private cd:ChangeDetectorRef) {}
 
   ngOnInit() {
     this.setupTable();
@@ -53,7 +54,8 @@ export class DynamictableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['columnMetaData'] || changes['data']) {
-      this.setupTable();
+      setTimeout(()=>{this.setupTable();},0);
+      console.log('Hello i was called');
     }
     
   }
@@ -80,7 +82,8 @@ export class DynamictableComponent implements OnInit, OnChanges {
 
     // Set up data source
     this.columnsToDisplay = [...sortedColumns];
-    this.dataSource = new MatTableDataSource([...this.data]); 
+    this.dataSource = new MatTableDataSource(this.data);
+    this.cd.detectChanges();
   }
 
   getColumnType(column: columnMetaDataType) {
@@ -150,14 +153,17 @@ export class DynamictableComponent implements OnInit, OnChanges {
   }
 
   getStatusClass(column:columnMetaDataType,value:string | undefined){
+    let ans='';
     if(column.type==='status' && value){
-      return `status-${value.toLowerCase()}`;
+      ans+=`status-${value.toLowerCase()}`;
     }
-    return '';
+    return ans;
   }
 
   isOverflowing(element:any){
-    return (element.offsetWidth < element.scrollWidth)
+
+    const ans=(element.offsetWidth < element.scrollWidth);
+    return ans;
   }
   
 }

@@ -1,7 +1,4 @@
 <div class="layout-container">
 
-  <app-dynamictable *ngIf="leaveData.length>0;else noData" [data]="leaveData" [columnMetaData]="columnMetaData" ></app-dynamictable>
-  <ng-template #noData>
-    No Data could be found for the currentUser or no User has been selected
-  </ng-template>
+  <app-dynamictable [loading]="isLoading" [data]="leaveData" [columnMetaData]="columnMetaData" ></app-dynamictable>
 </div>

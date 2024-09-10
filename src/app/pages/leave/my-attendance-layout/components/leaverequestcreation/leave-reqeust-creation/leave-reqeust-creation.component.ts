@@ -84,17 +84,6 @@ export class LeaveReqeustCreationComponent implements OnInit {
     this.leaveRequestCreationForm.get(controlName)?.reset();
   }
 
-//   {
-//     "employeeId": 4,
-//     "fromDate": "2024-09-01",
-//     "toDate": "2024-09-01",
-//     "duration": "Half Day",
-//     "firstHalf": false,
-//     "secondHalf": true,
-//     "leaveTypeName": "Sick Leave",
-//     "reason": "Fever"
-// }  
-
   sendData(){
     if(this.leaveRequestCreationForm.valid){
       const data=this.leaveRequestCreationForm.value;

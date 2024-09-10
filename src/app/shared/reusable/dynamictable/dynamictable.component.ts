@@ -37,9 +37,16 @@ import { PageEvent } from '@angular/material/paginator';
     MatTooltipModule,
     MatIconModule,
     TooltipOnOverflowDirective,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
-  providers: [CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, DataPipe, TooltipOnOverflowDirective],
+  providers: [
+    CurrencyPipe,
+    DatePipe,
+    DecimalPipe,
+    PercentPipe,
+    DataPipe,
+    TooltipOnOverflowDirective,
+  ],
   templateUrl: './dynamictable.component.html',
   styleUrls: ['./dynamictable.component.scss'],
 })
@@ -67,7 +74,9 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['columnMetaData'] || changes['data']) {
-      setTimeout(() => { this.setupTable(); }, 0);
+      setTimeout(() => {
+        this.setupTable();
+      }, 0);
     }
   }
 
@@ -89,26 +98,20 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
       .map((col) => col.columnName || 'combineData');
 
-    // Set up data source
     this.columnsToDisplay = [...sortedColumns];
     this.dataSource = new MatTableDataSource(this.data);
     this.totalSize = this.data.length;
 
-    // Assign paginator to dataSource
     this.dataSource.paginator = this.paginator;
-
-    // Initialize pagination
     this.iterator();
 
     this.cd.detectChanges();
   }
 
   onPageChange(event: PageEvent) {
-    console.log(event)
-    this.getCurrentPage = event.pageIndex; // Update current page index
-    this.pageSize = event.pageSize; // Update page size
-
-    // Update the displayed data based on the new page
+    console.log(event);
+    this.getCurrentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
     this.iterator();
   }
 
@@ -133,11 +136,14 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
 
   getClass(...classes: (string | string[] | undefined | null)[]): string {
     const validClasses = classes
-      .filter(item => item != null && item != undefined)
-      .flatMap(item =>
-        typeof item === 'string' ? [item] :
-          Array.isArray(item) ? item : []
-      ).filter((value, index, self) => typeof value === 'string' && self.indexOf(value) === index);
+      .filter((item) => item != null && item != undefined)
+      .flatMap((item) =>
+        typeof item === 'string' ? [item] : Array.isArray(item) ? item : []
+      )
+      .filter(
+        (value, index, self) =>
+          typeof value === 'string' && self.indexOf(value) === index
+      );
 
     return validClasses.join(' ');
   }
@@ -187,11 +193,6 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
     if (column.type === 'status' && value) {
       ans += `status-${value.toLowerCase()}`;
     }
-    return ans;
-  }
-
-  isOverflowing(element: any) {
-    const ans = (element.offsetWidth < element.scrollWidth);
     return ans;
   }
 }

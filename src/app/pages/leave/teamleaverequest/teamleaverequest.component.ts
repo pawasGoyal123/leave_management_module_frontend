@@ -134,7 +134,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
         type: 'date',
         commonColumnClass: ['flex-grow'],
         typeArgs: ['dd-MMM-yyyy'],
-        combineSeprator: ' - ', // Ensure correct spelling
+        combineSeprator: ' - ', 
       },
       { label: 'First Half', columnName: 'firstHalf', type: 'boolean' },
       { label: 'Second Half', columnName: 'secondHalf', type: 'boolean' },
@@ -143,6 +143,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
         columnName: 'reason',
         rowColumnClass: ['start'],
         hide: this.status != 'Pending',
+        tooltip:true
       },
       {
         columnName: 'action',

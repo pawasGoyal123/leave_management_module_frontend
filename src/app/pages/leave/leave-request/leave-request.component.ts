@@ -55,7 +55,8 @@ export class LeaveRequestComponent {
           columnName: 'managerComment',
           label: 'Manager Comment',
           commonColumnClass:['overflow-content'],
-          rowColumnClass:[]
+          rowColumnClass:[],
+          tooltip:true
         }
       ];
       this.columnMetaData=data;

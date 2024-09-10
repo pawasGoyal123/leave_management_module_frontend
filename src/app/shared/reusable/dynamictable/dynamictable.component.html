@@ -18,7 +18,7 @@
         appTooltipOnOverflow
         [matTooltip]="getTooltipText(element, column)"
         [matTooltipPosition]="'left'"
-        [matTooltipDisabled]="!isOverflowing(content)"
+        [matTooltipDisabled]="!column.tooltip"
         #content
       >
         <ng-container *ngIf="column.template; else defaultData">

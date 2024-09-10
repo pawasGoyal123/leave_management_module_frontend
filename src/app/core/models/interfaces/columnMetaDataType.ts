@@ -14,5 +14,6 @@ export interface columnMetaDataType{
     combineData?:string[];
     combineSeprator?:string;
     hide?:boolean;
+    tooltip?:boolean;
 
 }

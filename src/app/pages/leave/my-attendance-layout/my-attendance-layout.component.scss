@@ -56,6 +56,7 @@ a:hover{
     gap:8px;
     width: 100%;
     justify-content: space-between;
+    overflow: auto;
 }
 
 .btn span{
@@ -64,7 +65,8 @@ a:hover{
 
 .main-content-container{
     width: 100%;
-    overflow: none;
+    height: 100%;
+    overflow: hidden;
     padding:12px 16px;
 }
 
@@ -72,4 +74,11 @@ a:hover{
     display: flex;
     flex-direction: column;
     padding:12px 16px;
+}
+
+.layout-container{
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    flex-direction: column;
 }

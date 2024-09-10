@@ -1,5 +1,6 @@
-<div class="custom-table-container">
-  <mat-table [dataSource]="dataSource" class="custom-table">
+<div class="table-container">
+  <mat-table [dataSource]="dataSource" class="mat-elevate custom-table">
+    <!-- Define your columns and cells here -->
     <ng-container
       *ngFor="let column of columnMetaData; trackBy: trackByColumn"
       [matColumnDef]="column.columnName || 'combineData'"
@@ -49,17 +50,16 @@
 
     <!-- Header and Rows Definitions -->
     <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-          
-      <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
-  
-    
+    <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
   </mat-table>
+
   <ng-template [ngIf]="loading">
     <div class="loader-container">
       <span class="loader"></span>
     </div>
   </ng-template>
-  <ng-template [ngIf]="!loading && dataSource.filteredData.length===0">
+
+  <ng-template [ngIf]="!loading && dataSource.filteredData.length === 0">
     <div class="no-data-container">
       <img src="./images/nodata.png" class="no-data" alt="">
     </div>

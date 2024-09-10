@@ -1,27 +1,28 @@
-:host {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@use '@angular/material' as mat;
+
+
+.table-container {
   width: 100%;
-  overflow: auto;
+  height: 100%;     /* Ensure it takes the full height of its parent */
+  overflow: hidden;  /* Hide overflow to allow only the table to scroll */
 }
 
-.custom-table-container {
-  width: 100%;
-  overflow-x: auto !important; /* Enable horizontal scrolling */
-}
-
-mat-table {
+.custom-table {
   width: 100%;
   border-radius: 8px;
   border: 1px solid #E8EBED;
   border-collapse: collapse;
   box-sizing: border-box;
-  overflow-x: auto;
+  display: block;
+  max-height: 80%;   /* Limit height to the container's height */
+  overflow-y: auto;   /* Enable vertical scrolling */
 }
 
 mat-header-row {
   background-color: #F9FAFB;
+  position: sticky;
+  top: 0;
+  z-index: 0;
 }
 
 mat-header-row,
@@ -65,24 +66,6 @@ mat-cell {
   color: rgb(52, 199, 89);
 }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #e5e5ea #ffffff;
-}
-
-*::-webkit-scrollbar {
-  width: 12px;
-}
-
-*::-webkit-scrollbar-track {
-  background: #ffffff;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #e5e5ea;
-  border-radius: 20px;
-  border: 2px none #ffffff;
-}
 
 .status-approved {
   color: green !important;
@@ -114,21 +97,25 @@ mat-cell {
   display: none;
 }
 
-.loader-container{
+.loader-container {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap:8px;
+  gap: 8px;
   height: 200px;
 }
 
-.no-data{
+.no-data {
   height: 400px;
 }
 
-.no-data-container{
+.no-data-container {
   @extend .loader-container;
   height: 400px;
+}
+
+.mat-elevate {
+  @include mat.elevation(8);
 }

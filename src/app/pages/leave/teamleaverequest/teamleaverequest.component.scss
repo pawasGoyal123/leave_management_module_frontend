@@ -1,8 +1,15 @@
+:host{
+    height: 100%;
+    width: 100%;
+    overflow: none;
+}
 .parent-container{
     display: flex;
     flex-direction: column;
     gap:8px;
-    padding:12px 16px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 
 .navigation-container{
@@ -42,6 +49,7 @@ a:hover{
     gap:8px;
     width: 100%;
     justify-content: flex-start;
+    padding:8px;
 }
 
 .action-container{
@@ -72,3 +80,11 @@ a:hover{
     border-radius: 4px;
     cursor: pointer;
   }
+
+  .flex-grow{
+    height: 100%;
+    width: 100%;
+    padding:8px;
+
+  }
+  

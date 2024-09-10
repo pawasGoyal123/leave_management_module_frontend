@@ -21,18 +21,28 @@ import { User } from '../../../core/models/interfaces/User';
 export class NotificationComponent implements OnInit {
   notifications:NotificationType[]=[];
   loading:boolean=false;
-  @Output() close=new EventEmitter<boolean>();
+  unreadCount:number=0;
+  @Output() close=new EventEmitter<NotificationType[]>();
   constructor(private dialog:MatDialog,private userService:CurrentUserService,private notificationService:NotificationService){};
 
   onClose(){
-    this.close.emit(true);
+    this.close.emit(this.notifications);
   }
 
-  markRead(notification:NotificationType){
+  calculateUnread(notifications:NotificationType[]){
+    return notifications.reduce((prev,curr)=>(prev+(curr.status?0:1)),0);
+  }
+
+  markRead(notification:NotificationType,index:number){
     const notificationDialog=this.dialog.open(NotificationDialogComponent,{
       data:notification
     });
-    this.close.emit(true);
+    notificationDialog.afterClosed().subscribe((data)=>{
+      if(data.updated){
+        this.notifications[index]=data.data;
+        this.unreadCount=this.calculateUnread(this.notifications);
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -40,7 +50,7 @@ export class NotificationComponent implements OnInit {
       if(data){
         this.loading=true;
         this.notificationService.getAllNotifications(data.id).subscribe({
-          next:(notifications:NotificationType[])=>{this.notifications=notifications;this.loading=false;},
+          next:(notifications:NotificationType[])=>{this.notifications=notifications;this.loading=false;this.unreadCount=this.calculateUnread(this.notifications)},
           error:()=>{this.notifications=[],this.loading=false;}
         })
       }

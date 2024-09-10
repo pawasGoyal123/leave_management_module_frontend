@@ -77,4 +77,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleDisplay() {
     this.showNotification.set(!this.showNotification());
   }
+
+  refreshNotifications($data:NotificationType[]){
+    this.unreadCount=$data.reduce((prev,curr)=>prev+(curr.status?0:1),0);
+    this.toggleDisplay();
+  }
 }

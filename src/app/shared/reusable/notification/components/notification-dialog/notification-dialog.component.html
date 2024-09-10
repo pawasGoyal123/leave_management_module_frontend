@@ -3,5 +3,5 @@
   {{data.content}}
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button [mat-dialog-close] color="warn" class="danger"  >Close</button>
+  <button mat-raised-button (click)="closeModal()" color="warn" class="danger"  >Close</button>
 </mat-dialog-actions>

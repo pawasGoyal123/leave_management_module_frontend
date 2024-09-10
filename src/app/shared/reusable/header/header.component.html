@@ -37,4 +37,4 @@
   </div>
 </header>
 
-<app-notification *ngIf="showNotification()" (close)="toggleDisplay()" ></app-notification>
+<app-notification *ngIf="showNotification()" (close)="refreshNotifications($event)" ></app-notification>

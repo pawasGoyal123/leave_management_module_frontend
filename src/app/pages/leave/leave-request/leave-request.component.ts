@@ -31,7 +31,7 @@ export class LeaveRequestComponent {
           columnName: 'duration',
           label: 'Duration Requested',
           type: 'date',
-          typeArgs: ['dd-MMM'],
+          typeArgs: ['dd-MMM-yyyy'],
           combineData:['fromDate','toDate'],
           combineSeprator:' - ',
           commonColumnClass: ['flex-grow','start']

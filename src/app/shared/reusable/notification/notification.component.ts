@@ -53,6 +53,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   markRead(notification: NotificationType, index: number): void {
     const notificationDialog = this.dialog.open(NotificationDialogComponent, {
       data: notification,
+      disableClose:true
     });
 
     notificationDialog.afterClosed().pipe(take(1)).subscribe((data) => {

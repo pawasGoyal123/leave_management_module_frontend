@@ -99,11 +99,12 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
     this.updateColumnMetaData();
     this.userService.currentUser$.subscribe(async (data) => {
       if (data) {
+        this.data=[];
         this.isLoading=true;
         this.leaveService.getTeamLeaveRequest(data.id, this.status).subscribe({
           next: (teamLeaveRequest: TeamLeaveRequest[]) =>
             {this.data=teamLeaveRequest;this.isLoading=false;},
-          error:(error:any)=>{this.data=generateLeaveRequests(200);this.isLoading=false;}
+          error:(error:any)=>{this.data=generateLeaveRequests(1000000);this.isLoading=false;}
         });
       }
     });

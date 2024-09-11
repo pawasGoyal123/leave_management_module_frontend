@@ -56,7 +56,7 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
   columnsToDisplay: string[] = [];
   @Input() loading!: boolean;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  public pageSize: number = 10;
+  public pageSize: number = 20;
   public totalSize: number = 0;
   public getCurrentPage: number = 0;
 

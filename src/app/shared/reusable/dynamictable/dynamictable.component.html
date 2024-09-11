@@ -65,8 +65,10 @@
     </div>
   </ng-template>
 
-  <mat-paginator #paginator [pageSize]="pageSize" [length]="totalSize" (page)="onPageChange($event)" [pageIndex]="getCurrentPage" [pageSizeOptions]="[5, 10, 20]"
-  showFirstLastButtons
-  aria-label="Select page for Table Data">
-</mat-paginator>
+  <ng-template [ngIf]="!loading && data.length>0">
+    <mat-paginator #paginator [pageSize]="pageSize" [length]="totalSize" (page)="onPageChange($event)" [pageIndex]="getCurrentPage" [pageSizeOptions]="[20,50,100]"
+    showFirstLastButtons
+    aria-label="Select page for Table Data">
+    </mat-paginator>
+  </ng-template>
 </div>

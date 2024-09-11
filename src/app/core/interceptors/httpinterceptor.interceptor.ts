@@ -30,12 +30,6 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
         }
       }
 
-      if (error.status === 500) {
-        errorMessage = 'Internal Server Error. Please try again later.';
-      } else if (error.status === 404) {
-        errorMessage = 'Resource not found.';
-      }
-
       console.error('HTTP Error:', error);
       toastr.error(errorMessage);
 

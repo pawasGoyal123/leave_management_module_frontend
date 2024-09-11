@@ -38,7 +38,8 @@ export class MyAttendanceLayoutComponent implements OnDestroy {
 
   openLeaveCreationDialog(): void {
     const leaveCreationRef = this.dialog.open(LeaveReqeustCreationComponent, {
-      data: { message: 'Create Leave Request' }
+      data: { message: 'Create Leave Request' },
+      disableClose:true
     });
 
     this.dialogSubscription = leaveCreationRef.afterClosed().pipe(

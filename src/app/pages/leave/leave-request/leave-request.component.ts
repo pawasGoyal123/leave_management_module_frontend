@@ -1,6 +1,11 @@
-import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
-import { firstValueFrom, Subscription, take } from 'rxjs';
-import { User } from '../../../core/models/interfaces/User';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
 import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 import { myLeaveRequest } from '../../../core/models/interfaces/myLeaveRequest';
 import { LeaveService } from '../../../core/services/leave/leave.service';
@@ -11,90 +16,120 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-leave-request',
   standalone: true,
-  imports: [DynamictableComponent,CommonModule],
+  imports: [DynamictableComponent, CommonModule],
   templateUrl: './leave-request.component.html',
-  styleUrl: './leave-request.component.scss'
+  styleUrls: ['./leave-request.component.scss'],
 })
 export class LeaveRequestComponent {
   @ViewChild('buttonRef') buttonRef!: TemplateRef<any>;
-  columnMetaData: columnMetaDataType[]=[];
-  leaveData:myLeaveRequest[]=[];
-  private userSubscription!:Subscription;
-  isLoading:boolean=false;
+  columnMetaData: columnMetaDataType[] = [];
+  leaveData: myLeaveRequest[] = [];
+  isLoading: boolean = false;
 
-  constructor(private userService:CurrentUserService,private leaveService:LeaveService,private cd:ChangeDetectorRef){};
+  private userSubscription!: Subscription;
 
-  ngAfterViewInit(){
-    setTimeout(()=>{
-      const data:columnMetaDataType[]=[
-        {
-          columnName: 'duration',
-          label: 'Duration Requested',
-          type: 'date',
-          typeArgs: ['dd-MMM-yyyy'],
-          combineData:['fromDate','toDate'],
-          combineSeprator:' - ',
-          commonColumnClass: ['flex-grow','start']
-        },
-        {
-          columnName: 'firstHalf',
-          label: 'First Half',
-          type:'boolean'
-        },
-        {
-          columnName: 'secondHalf',
-          label: 'Second Half',
-          type:'boolean',
-        },
-        {
-          columnName: 'status',
-          label: 'Status',
-          type:'status'
-        },
-        {
-          columnName: 'managerComment',
-          label: 'Manager Comment',
-          commonColumnClass:['overflow-content'],
-          rowColumnClass:[],
-          tooltip:true
-        }
-      ];
-      this.columnMetaData=data;
-      this.cd.detectChanges();
-    },0);
-    
+  constructor(
+    private userService: CurrentUserService,
+    private leaveService: LeaveService,
+    private cd: ChangeDetectorRef
+  ) {}
+
+  ngAfterViewInit() {
+    this.initializeColumnMetaData();
   }
 
   ngOnInit(): void {
-    this.userSubscription=this.userService.currentUser$.subscribe(async(data)=>{
-      if(data){
-        this.isLoading=true;
-        this.leaveService.getLeaveRequestsByEmployeeId(data.id).subscribe({
-          next:(leaveData:myLeaveRequest[])=>{this.leaveData=leaveData;this.isLoading=false},
-          error:(error:any)=>{this.leaveData=[];this.isLoading=false;}
+    this.userSubscription = this.userService.currentUser$
+      .pipe(
+        tap(() => (this.isLoading = true)),
+        switchMap((user) => {
+          if (user) {
+            return this.leaveService
+              .getLeaveRequestsByEmployeeId(user.id)
+              .pipe(tap(() => (this.isLoading = false)));
+          } else {
+            this.isLoading = false;
+            return [];
+          }
         })
-      }
-    })
-    this.leaveService.leaveRequestCreated$.subscribe((data)=>{if(data){this.refreshData()}});
+      )
+      .subscribe({
+        next: (leaveData: myLeaveRequest[]) => (this.leaveData = leaveData),
+        error: () => {
+          this.leaveData = [];
+          this.isLoading = false;
+        },
+      });
+
+    this.leaveService.leaveRequestCreated$.subscribe((data) => {
+      if(data){
+      this.refreshData();}
+    });
   }
 
   ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+    this.userSubscription?.unsubscribe();
   }
 
-  refreshData(){
-    this.userSubscription=this.userService.currentUser$.pipe(take(1)).subscribe((data)=>{
-      if(data){
-        this.isLoading=true;
-        this.leaveData=[];
-        this.cd.detectChanges();
-        console.log('Yaha pe aagye hai')
-        this.leaveService.getLeaveRequestsByEmployeeId(data.id).pipe(take(1)).subscribe({
-          next:(leaveData:myLeaveRequest[])=>{this.leaveData=leaveData;this.isLoading=false;this.cd.detectChanges()},
-          error:()=>{this.leaveData=[];this.isLoading=false;this.cd.detectChanges()}
+  private initializeColumnMetaData() {
+    this.columnMetaData = [
+      {
+        columnName: 'duration',
+        label: 'Duration Requested',
+        type: 'date',
+        typeArgs: ['dd-MMM-yyyy'],
+        combineData: ['fromDate', 'toDate'],
+        combineSeprator: ' - ',
+        commonColumnClass: ['flex-grow', 'start'],
+      },
+      {
+        columnName: 'firstHalf',
+        label: 'First Half',
+        type: 'boolean',
+      },
+      {
+        columnName: 'secondHalf',
+        label: 'Second Half',
+        type: 'boolean',
+      },
+      {
+        columnName: 'status',
+        label: 'Status',
+        type: 'status',
+      },
+      {
+        columnName: 'managerComment',
+        label: 'Manager Comment',
+        commonColumnClass: ['overflow-content'],
+        rowColumnClass: [],
+        tooltip: true,
+      },
+    ];
+    this.cd.detectChanges();
+  }
+
+  private refreshData() {
+    this.userService.currentUser$
+      .pipe(take(1),
+        switchMap((user) => {
+          if (user) {
+            this.isLoading = true;
+            this.leaveData=[];
+            return this.leaveService
+              .getLeaveRequestsByEmployeeId(user.id)
+              .pipe(tap(() => (this.isLoading = false)),take(1));
+          }
+          return [];
         })
-      }
-    })
+      )
+      .subscribe({
+        next: (leaveData: myLeaveRequest[]) => {
+          this.leaveData = leaveData;
+        },
+        error: () => {
+          this.leaveData = [];
+          this.isLoading = false;
+        },
+      });
   }
-
 }

@@ -24,6 +24,8 @@ import { CurrentUserService } from '../../../core/services/user/current-user-ser
 import { LeaveService } from '../../../core/services/leave/leave.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AcceptleaverequestComponent } from './components/acceptleaverequest/acceptleaverequest/acceptleaverequest.component';
+import { switchMap, tap, take } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-teamleaverequest',
@@ -51,9 +53,30 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe((params) => {
-      const status = params.get('status');
-      this.setStatus(status);
+    this.activatedRoute.paramMap.pipe(
+      switchMap(params => {
+        const status = params.get('status');
+        this.setStatus(status);
+        return this.userService.currentUser$;
+      }),
+      switchMap(user => {
+        if (user) {
+          this.isLoading = true;
+          this.data=[];
+          return this.leaveService.getTeamLeaveRequest(user.id, this.status);
+        }
+        return of([]); // Return an empty array if no user
+      }),
+      tap(() => (this.isLoading = false))
+    ).subscribe({
+      next: (teamLeaveRequest: TeamLeaveRequest[]) => {
+        this.data = teamLeaveRequest;
+        this.updateColumnMetaData();
+      },
+      error: (error: any) => {
+        console.error('Error fetching leave data:', error);
+        this.data = [];
+      }
     });
   }
 
@@ -64,24 +87,6 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
   private setStatus(status: string | null) {
     this.status = this.mapStatus(status);
     this.updateColumnMetaData();
-    this.userService.currentUser$.subscribe(async (data) => {
-      if (data) {
-        this.isLoading = true;
-        this.data = [];
-        this.leaveService.getTeamLeaveRequest(data.id, this.status).subscribe({
-          next: (teamLeaveRequest: TeamLeaveRequest[]) => {
-            this.data = teamLeaveRequest;
-            this.isLoading = false;
-            this.cdr.detectChanges();
-          },
-          error: (error: any) => {
-            this.isLoading = false;
-            this.cdr.detectChanges();
-          }
-        });
-      }
-    });
-    this.cdr.detectChanges();
   }
 
   private mapStatus(status: string | null): statusType {
@@ -116,7 +121,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
         label: 'Leave Reason',
         columnName: 'reason',
         rowColumnClass: ['start'],
-        hide: this.status != 'Pending',
+        hide: this.status !== 'Pending',
         tooltip: true
       },
       {
@@ -142,9 +147,10 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
       },
       width: '60%',
     });
-    dialogRef.afterClosed().subscribe((data) => {
+    dialogRef.afterClosed().pipe(take(1)).subscribe((data) => {
       if (data && data.action === 'Confirm') {
         this.isLoading = true;
+        this.data=[];
         this.leaveService
           .updateLeaveRequest(element.id, 'Approved', data.data)
           .subscribe(() => {
@@ -161,9 +167,10 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
       },
       width: '60%',
     });
-    dialogRef.afterClosed().subscribe((data) => {
+    dialogRef.afterClosed().pipe(take(1)).subscribe((data) => {
       if (data && data.action === 'Confirm') {
         this.isLoading = true;
+        this.data=[];
         this.leaveService
           .updateLeaveRequest(element.id, 'Rejected', data.data)
           .subscribe(() => {
@@ -174,22 +181,24 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
   }
 
   private refreshLeaveRequests() {
-    this.userService.currentUser$.subscribe((data) => {
-      this.isLoading = true;
-      this.data = [];
-      this.cdr.detectChanges();
-      if (data) {
-        this.leaveService.getTeamLeaveRequest(data.id, this.status).subscribe({
-          next: (teamLeaveRequest: TeamLeaveRequest[]) => {
-            this.data = teamLeaveRequest;
-            this.isLoading = false;
-            this.cdr.detectChanges();
-          },
-          error: (error: any) => {
-            this.isLoading = false;
-            this.cdr.detectChanges();
-          }
-        });
+    this.isLoading = true;
+    this.userService.currentUser$.pipe(
+      take(1),
+      switchMap(user => {
+        if (user) {
+          this.data = [];
+          return this.leaveService.getTeamLeaveRequest(user.id, this.status).pipe(take(1));
+        }
+        return of([]);
+      }),
+      tap(() => (this.isLoading = false))
+    ).subscribe({
+      next: (teamLeaveRequest: TeamLeaveRequest[]) => {
+        this.data = teamLeaveRequest;
+      },
+      error: (error: any) => {
+        console.error('Error fetching leave data:', error);
+        this.data = [];
       }
     });
   }

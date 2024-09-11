@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
-import { firstValueFrom, Subscription } from 'rxjs';
+import { firstValueFrom, Subscription, take } from 'rxjs';
 import { User } from '../../../core/models/interfaces/User';
 import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 import { myLeaveRequest } from '../../../core/models/interfaces/myLeaveRequest';
@@ -75,10 +75,26 @@ export class LeaveRequestComponent {
         })
       }
     })
+    this.leaveService.leaveRequestCreated$.subscribe((data)=>{if(data){this.refreshData()}});
   }
 
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
+  }
+
+  refreshData(){
+    this.userSubscription=this.userService.currentUser$.pipe(take(1)).subscribe((data)=>{
+      if(data){
+        this.isLoading=true;
+        this.leaveData=[];
+        this.cd.detectChanges();
+        console.log('Yaha pe aagye hai')
+        this.leaveService.getLeaveRequestsByEmployeeId(data.id).pipe(take(1)).subscribe({
+          next:(leaveData:myLeaveRequest[])=>{this.leaveData=leaveData;this.isLoading=false;this.cd.detectChanges()},
+          error:()=>{this.leaveData=[];this.isLoading=false;this.cd.detectChanges()}
+        })
+      }
+    })
   }
 
 }

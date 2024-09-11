@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { LEAVE_REGISTER, LEAVE_REQUESTS } from '../../../core/constants/app.constants';
@@ -47,7 +47,7 @@ export class MyAttendanceLayoutComponent implements OnDestroy {
       if (data?.event === 'Create' && data.data) {
         this.userService.currentUser$.pipe(take(1)).subscribe(currentUser => {
           if (currentUser) {
-            this.leaveService.createLeaveRequest(data.data, currentUser.id).subscribe();
+            this.leaveService.createLeaveRequest(data.data, currentUser.id).subscribe(()=>this.leaveService.emitLeaveRequestCreated());
           }
         });
       }

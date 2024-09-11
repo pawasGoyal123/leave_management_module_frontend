@@ -1,5 +1,5 @@
 <div class="table-container">
-  <mat-table [dataSource]="dataSource" class="mat-elevate custom-table">
+  <mat-table [dataSource]="dataSource" class="mat-elevate custom-table" [ngClass]="{'table-grow':!loading && data.length!=0}">
     <!-- Define your columns and cells here -->
     <ng-container
       *ngFor="let column of columnMetaData; trackBy: trackByColumn"

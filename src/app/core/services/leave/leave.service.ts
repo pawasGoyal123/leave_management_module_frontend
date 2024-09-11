@@ -14,13 +14,15 @@ import {
 import { myLeaveRequest } from '../../models/interfaces/myLeaveRequest';
 import { TeamLeaveRegister } from '../../models/interfaces/TeamLeaveRegister';
 import { leaveRequestCreationData } from '../../models/interfaces/leaveRequestCreationData';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LeaveService {
   constructor(private http: HttpClient) {}
-
+  private leaveReqeustCreated=new BehaviorSubject<boolean>(false);
+  leaveRequestCreated$=this.leaveReqeustCreated.asObservable();
   getLeaveBalance(userId: number) {
     return this.http.get<LeaveBalance[]>(`${GET_LEAVE_REGISTER_BALANCE}${userId}`);
   }
@@ -60,5 +62,9 @@ export class LeaveService {
       ...data,
       employeeId,
     });
+  }
+
+  emitLeaveRequestCreated(){
+    this.leaveReqeustCreated.next(true);
   }
 }

@@ -15,9 +15,13 @@
   border-collapse: collapse;
   box-sizing: border-box;
   display: block;
-  height: auto;
-  max-height: 80%;  /* Limit height to the container's height */
-  overflow-y: auto;   /* Enable vertical scrolling */
+  height:auto;
+  max-height: 80%; 
+  overflow-y: auto; 
+}
+
+.table-grow{
+  height: 80% !important;
 }
 
 mat-header-row {
@@ -128,4 +132,10 @@ mat-cell {
   .no-data-container{
     height: 200px;
   }
+}
+
+::ng-deep .mdc-data-table__row:last-child .mat-mdc-cell{
+  border-bottom-style: solid !important;
+  border-color:#74777f !important;
+  border-width: 1px !important;
 }

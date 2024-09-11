@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { DropdownModule } from 'primeng/dropdown';
 import { MatIconModule } from '@angular/material/icon';
 import { LeaveService } from '../../../../../../core/services/leave/leave.service';
+import { toDate } from 'date-fns';
 
 type DialogData={
   message:string;
@@ -28,6 +29,15 @@ export function dateRangeValidator(fromDateKey: string, toDateKey: string): Vali
 
     return null;
   };
+}
+
+function dateToISOLikeButLocal(date:Date) {
+  const offsetMs = date.getTimezoneOffset() * 60 * 1000;
+  const msLocal =  date.getTime() - offsetMs;
+  const dateLocal = new Date(msLocal);
+  const iso = dateLocal.toISOString();
+  const isoLocal = iso.slice(0, 19);
+  return isoLocal;
 }
 
 
@@ -87,8 +97,9 @@ export class LeaveReqeustCreationComponent implements OnInit {
   sendData(){
     if(this.leaveRequestCreationForm.valid){
       const data=this.leaveRequestCreationForm.value;
-      const obj={fromDate:data.fromDate,
-        toDate:data.toDate,
+      console.log(data);
+      const obj={fromDate:dateToISOLikeButLocal(data.fromDate),
+        toDate:dateToISOLikeButLocal(data.toDate),
         duration:data.duration,
         firstHalf:data.duration!='Full Day'?data.leaveHalf=='First Half' || !data.leaveHalf:true,
         secondHalf:data.duration!='Full Day'?data.leaveHalf=='Second Half':true,
@@ -96,6 +107,7 @@ export class LeaveReqeustCreationComponent implements OnInit {
         reason:data.reason};
       this.dialogRef.close({event:'Create',data:obj})
     }
+    console.log(this.leaveRequestCreationForm.value);
   }
 
 }

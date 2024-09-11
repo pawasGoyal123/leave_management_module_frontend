@@ -25,39 +25,6 @@ import { LeaveService } from '../../../core/services/leave/leave.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AcceptleaverequestComponent } from './components/acceptleaverequest/acceptleaverequest/acceptleaverequest.component';
 
-
-function generateLeaveRequests(num:number):TeamLeaveRequest[] {
-  const leaveRequests:TeamLeaveRequest[] = [];
-  const reasons = [
-    "Family function",
-    "Medical leave",
-    "Personal reasons",
-    "Vacation",
-    "Emergency",
-    "Work from home",
-    "Training",
-    "Other",
-  ];
-
-  for (let i = 1; i <= num; i++) {
-    const fromDate = new Date(2024, 6, 12); // July is month 6 (0-indexed)
-    const toDate = new Date(2024, 6, 12);
-    
-    leaveRequests.push({
-      id: i,
-      employeeName: `Employee ${i}`,
-      fromDate: fromDate,
-      toDate: toDate,
-      firstHalf: Math.random() < 0.5, // Random boolean
-      secondHalf: Math.random() < 0.5, // Random boolean
-      reason: reasons[Math.floor(Math.random() * reasons.length)],
-      statusChangeDate: new Date(),
-      status: Math.random() < 0.5 ? "Approved" : "Pending", // Random status
-    });
-  }
-
-  return leaveRequests;
-}
 @Component({
   selector: 'app-teamleaverequest',
   standalone: true,
@@ -72,7 +39,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
   status!: statusType;
   data: TeamLeaveRequest[] = [];
   routeData = TEAM_LEAVE_REQUEST_ROUTE;
-  isLoading:boolean=false;
+  isLoading: boolean = false;
 
   constructor(
     private router: Router,
@@ -99,12 +66,18 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
     this.updateColumnMetaData();
     this.userService.currentUser$.subscribe(async (data) => {
       if (data) {
-        this.data=[];
-        this.isLoading=true;
+        this.isLoading = true;
+        this.data = [];
         this.leaveService.getTeamLeaveRequest(data.id, this.status).subscribe({
-          next: (teamLeaveRequest: TeamLeaveRequest[]) =>
-            {this.data=teamLeaveRequest;this.isLoading=false;},
-          error:(error:any)=>{this.data=generateLeaveRequests(1000000);this.isLoading=false;}
+          next: (teamLeaveRequest: TeamLeaveRequest[]) => {
+            this.data = teamLeaveRequest;
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          },
+          error: (error: any) => {
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          }
         });
       }
     });
@@ -135,7 +108,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
         type: 'date',
         commonColumnClass: ['flex-grow'],
         typeArgs: ['dd-MMM-yyyy'],
-        combineSeprator: ' - ', 
+        combineSeprator: ' - ',
       },
       { label: 'First Half', columnName: 'firstHalf', type: 'boolean' },
       { label: 'Second Half', columnName: 'secondHalf', type: 'boolean' },
@@ -144,7 +117,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
         columnName: 'reason',
         rowColumnClass: ['start'],
         hide: this.status != 'Pending',
-        tooltip:true
+        tooltip: true
       },
       {
         columnName: 'action',
@@ -170,10 +143,13 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
       width: '60%',
     });
     dialogRef.afterClosed().subscribe((data) => {
-      if (data && data.action == 'Confirm') {
+      if (data && data.action === 'Confirm') {
+        this.isLoading = true;
         this.leaveService
           .updateLeaveRequest(element.id, 'Approved', data.data)
-          .subscribe((_) => this.removeLeaveFromList(element.id));
+          .subscribe(() => {
+            this.refreshLeaveRequests();
+          });
       }
     });
   }
@@ -186,16 +162,35 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
       width: '60%',
     });
     dialogRef.afterClosed().subscribe((data) => {
-      if (data && data.action == 'Confirm') {
+      if (data && data.action === 'Confirm') {
+        this.isLoading = true;
         this.leaveService
           .updateLeaveRequest(element.id, 'Rejected', data.data)
-          .subscribe((_) => this.removeLeaveFromList(element.id));
+          .subscribe(() => {
+            this.refreshLeaveRequests();
+          });
       }
     });
   }
 
-  private removeLeaveFromList(leaveId: number) {
-    this.data = this.data.filter((item) => item.id !== leaveId);
-    this.cdr.detectChanges();
+  private refreshLeaveRequests() {
+    this.userService.currentUser$.subscribe((data) => {
+      this.isLoading = true;
+      this.data = [];
+      this.cdr.detectChanges();
+      if (data) {
+        this.leaveService.getTeamLeaveRequest(data.id, this.status).subscribe({
+          next: (teamLeaveRequest: TeamLeaveRequest[]) => {
+            this.data = teamLeaveRequest;
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          },
+          error: (error: any) => {
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          }
+        });
+      }
+    });
   }
 }

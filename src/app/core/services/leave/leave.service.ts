@@ -55,6 +55,7 @@ export class LeaveService {
   }
 
   createLeaveRequest(data: leaveRequestCreationData, employeeId: number) {
+    console.log(data);
     return this.http.post(GET_TEAM_LEAVE_REQUEST, {
       ...data,
       employeeId,

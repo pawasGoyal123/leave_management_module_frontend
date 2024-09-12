@@ -32,3 +32,10 @@ mat-form-field{
 .select-container{
     flex-grow: 1 !important;
 }
+
+.loader-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+}

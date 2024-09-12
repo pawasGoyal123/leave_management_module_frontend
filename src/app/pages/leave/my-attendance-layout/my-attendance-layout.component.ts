@@ -4,11 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { LEAVE_REGISTER, LEAVE_REQUESTS } from '../../../core/constants/app.constants';
 import { MatDialog } from '@angular/material/dialog';
-import { LeaveReqeustCreationComponent } from './components/leaverequestcreation/leave-reqeust-creation/leave-reqeust-creation.component';
+
 import { LeaveService } from '../../../core/services/leave/leave.service';
 import { CurrentUserService } from '../../../core/services/user/current-user-service.service';
 import { Subscription } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { take} from 'rxjs/operators';
+import { LeaveRequestCreationComponent } from './components/leaverequestcreation/leave-reqeust-creation/leave-reqeust-creation.component';
 
 @Component({
   selector: 'app-my-attendance-layout',
@@ -37,20 +38,16 @@ export class MyAttendanceLayoutComponent implements OnDestroy {
   ) {}
 
   openLeaveCreationDialog(): void {
-    const leaveCreationRef = this.dialog.open(LeaveReqeustCreationComponent, {
+    const leaveCreationRef = this.dialog.open(LeaveRequestCreationComponent, {
       data: { message: 'Create Leave Request' },
       disableClose:true
     });
 
     this.dialogSubscription = leaveCreationRef.afterClosed().pipe(
     ).subscribe(data => {
-      if (data?.event === 'Create' && data.data) {
-        this.userService.currentUser$.pipe(take(1)).subscribe(currentUser => {
-          if (currentUser) {
-            this.leaveService.createLeaveRequest(data.data, currentUser.id).pipe(tap(()=>this.leaveService.emitLeaveRequestCreated())).subscribe();
-          }
-        });
-      }
+     if(data?.created){
+      this.leaveService.emitLeaveRequestCreated();
+     }
       this.dialogSubscription.unsubscribe();
     });
   }

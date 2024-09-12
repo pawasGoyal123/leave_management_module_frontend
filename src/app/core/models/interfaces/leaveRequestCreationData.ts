@@ -1,7 +1,6 @@
 export type leaveRequestCreationData = {
-  employeeId: number;
-  fromDate: Date;
-  toDate: Date;
+  fromDate: string;
+  toDate: string;
   duration: string;
   firstHalf: boolean;
   secondHalf: boolean;

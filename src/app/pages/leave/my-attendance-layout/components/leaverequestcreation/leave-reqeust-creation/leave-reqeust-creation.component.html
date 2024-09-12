@@ -1,97 +1,103 @@
 <h2 mat-dialog-title>{{ data.message }}</h2>
-<mat-dialog-content>
-  <form [formGroup]="leaveRequestCreationForm" class="form-container">
-    <div class="date-container">
-      <!-- From Date Field -->
-      <mat-form-field>
-        <mat-label>From Date</mat-label>
-        <input matInput formControlName="fromDate" [matDatepicker]="fromDate">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="fromDate" *ngIf="!leaveRequestCreationForm.controls['fromDate'].value"></mat-datepicker-toggle>
-        <mat-datepicker #fromDate></mat-datepicker>
-        <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['fromDate'].value" (click)="clearControl('fromDate')">
-          <mat-icon>clear</mat-icon>
-        </button>
-        <!-- Error for required field -->
-        <mat-error *ngIf="leaveRequestCreationForm.get('fromDate')?.hasError('required')">
-          From Date is a Required Field
-        </mat-error>
-      </mat-form-field>
-
-      <!-- To Date Field -->
-      <mat-form-field>
-        <mat-label>To Date</mat-label>
-        <input matInput formControlName="toDate" [matDatepicker]="toDate">
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="toDate" *ngIf="!leaveRequestCreationForm.controls['toDate'].value"></mat-datepicker-toggle>
-        <mat-datepicker #toDate></mat-datepicker>
-        <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['toDate'].value" (click)="clearControl('toDate')">
-          <mat-icon>clear</mat-icon>
-        </button>
-        <!-- Error for required field -->
-        <mat-error *ngIf="leaveRequestCreationForm.get('toDate')?.hasError('required')">
-          To Date is a Required Field
-        </mat-error>
-      </mat-form-field>
-    </div>
-   <div class="container">
-    <mat-form-field appearance="fill">
-      <mat-label>Leave Duration</mat-label>
-      <mat-select formControlName="duration" name="duration">
-        <mat-option *ngFor="let duration of leaveDurationData" [value]="duration.value">
-          {{duration.label}}
-        </mat-option>
-      </mat-select>
-      <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['duration'].value" (click)="clearControl('duration')">
-        <mat-icon>clear</mat-icon>
-      </button>
-      <mat-error>Leave Duration is a Required Field</mat-error>
-    </mat-form-field>
-   </div>
-   <div class="container">
-      <div class="select-container" *ngIf="leaveRequestCreationForm.controls['duration']?.value=='Half Day'">
-        <mat-form-field appearance="fill">
-          <mat-label>First/Second Half</mat-label>
-          <mat-select formControlName="leaveHalf" name="leaveHalf">
-            <mat-option *ngFor="let leaveHalf of leaveHalfData" [value]="leaveHalf.value">
-              {{leaveHalf.label}}
-            </mat-option>
-          </mat-select>
-          <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['leaveHalf'].value" (click)="clearControl('leaveHalf')">
+<mat-dialog-content >
+  <ng-template [ngIf]="!dialogLoading">
+    <form [formGroup]="leaveRequestCreationForm" class="form-container">
+      <div class="date-container">
+        <!-- From Date Field -->
+        <mat-form-field>
+          <mat-label>From Date</mat-label>
+          <input matInput formControlName="fromDate" [matDatepicker]="fromDate">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="fromDate" *ngIf="!leaveRequestCreationForm.controls['fromDate'].value"></mat-datepicker-toggle>
+          <mat-datepicker #fromDate></mat-datepicker>
+          <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['fromDate'].value" (click)="clearControl('fromDate')">
             <mat-icon>clear</mat-icon>
           </button>
+          <!-- Error for required field -->
+          <mat-error *ngIf="leaveRequestCreationForm.get('fromDate')?.hasError('required')">
+            From Date is a Required Field
+          </mat-error>
         </mat-form-field>
-      </div>
-      <div class="select-container">
-        <mat-form-field appearance="fill">
-          <mat-label>Leave Type</mat-label>
-          <mat-select formControlName="leaveTypeName" name="leaveTypeName">
-            <mat-option *ngFor="let leaveTypeName of leaveTypes" [value]="leaveTypeName.leaveType">
-              {{leaveTypeName.leaveType}}
-            </mat-option>
-          </mat-select>
-          <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['leaveTypeName'].value" (click)="clearControl('leaveTypeName')">
+        <!-- To Date Field -->
+        <mat-form-field>
+          <mat-label>To Date</mat-label>
+          <input matInput formControlName="toDate" [matDatepicker]="toDate">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="toDate" *ngIf="!leaveRequestCreationForm.controls['toDate'].value"></mat-datepicker-toggle>
+          <mat-datepicker #toDate></mat-datepicker>
+          <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['toDate'].value" (click)="clearControl('toDate')">
             <mat-icon>clear</mat-icon>
           </button>
-          <mat-error>Leave Type is a Required Field</mat-error>
+          <!-- Error for required field -->
+          <mat-error *ngIf="leaveRequestCreationForm.get('toDate')?.hasError('required')">
+            To Date is a Required Field
+          </mat-error>
         </mat-form-field>
       </div>
-   </div>
-   <div class="container">
-    <mat-form-field class="full-width">
-      <mat-label>Leave Reason</mat-label>
-      <textarea matInput placeholder="Provide Leave Reason if you wish" cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="5" class="full-width" formControlName="reason"></textarea>
-    </mat-form-field>
-   </div>
-  
-    <small class="error" *ngIf="leaveRequestCreationForm.hasError('dateRangeInvalid')">To date must be same or after from Date</small>
-  </form>
+     <div class="container">
+      <mat-form-field appearance="fill">
+        <mat-label>Leave Duration</mat-label>
+        <mat-select formControlName="duration" name="duration">
+          <mat-option *ngFor="let duration of leaveDurationData" [value]="duration.value">
+            {{duration.label}}
+          </mat-option>
+        </mat-select>
+        <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['duration'].value" (click)="clearControl('duration')">
+          <mat-icon>clear</mat-icon>
+        </button>
+        <mat-error>Leave Duration is a Required Field</mat-error>
+      </mat-form-field>
+     </div>
+     <div class="container">
+        <div class="select-container" *ngIf="leaveRequestCreationForm.controls['duration']?.value=='Half Day'">
+          <mat-form-field appearance="fill">
+            <mat-label>First/Second Half</mat-label>
+            <mat-select formControlName="leaveHalf" name="leaveHalf">
+              <mat-option *ngFor="let leaveHalf of leaveHalfData" [value]="leaveHalf.value">
+                {{leaveHalf.label}}
+              </mat-option>
+            </mat-select>
+            <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['leaveHalf'].value" (click)="clearControl('leaveHalf')">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="select-container">
+          <mat-form-field appearance="fill">
+            <mat-label>Leave Type</mat-label>
+            <mat-select formControlName="leaveTypeName" name="leaveTypeName">
+              <mat-option *ngFor="let leaveTypeName of leaveTypes" [value]="leaveTypeName.leaveType">
+                {{leaveTypeName.leaveType}}
+              </mat-option>
+            </mat-select>
+            <button mat-icon-button matSuffix *ngIf="leaveRequestCreationForm.controls['leaveTypeName'].value" (click)="clearControl('leaveTypeName')">
+              <mat-icon>clear</mat-icon>
+            </button>
+            <mat-error>Leave Type is a Required Field</mat-error>
+          </mat-form-field>
+        </div>
+     </div>
+     <div class="container">
+      <mat-form-field class="full-width">
+        <mat-label>Leave Reason</mat-label>
+        <textarea matInput placeholder="Provide Leave Reason if you wish" cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        cdkAutosizeMinRows="1"
+        cdkAutosizeMaxRows="5" class="full-width" formControlName="reason"></textarea>
+      </mat-form-field>
+     </div>
+    
+      <small class="error" *ngIf="leaveRequestCreationForm.hasError('dateRangeInvalid')">To date must be same or after from Date</small>
+    </form>
+  </ng-template>
+  <ng-template [ngIf]="dialogLoading">
+    <div class="loader-container"><span class="loader"></span></div>
+  </ng-template>
 </mat-dialog-content>
 
 <mat-dialog-actions>
   <button mat-raised-button [mat-dialog-close] color="warn" class="danger">Close</button>
   <button mat-raised-button [disabled]="leaveRequestCreationForm.invalid" (click)="sendData()">Create</button>
 </mat-dialog-actions>
+
+

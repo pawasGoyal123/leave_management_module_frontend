@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { delay, switchMap, take, tap } from 'rxjs/operators';
 import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 import { myLeaveRequest } from '../../../core/models/interfaces/myLeaveRequest';
 import { LeaveService } from '../../../core/services/leave/leave.service';
@@ -41,12 +41,17 @@ export class LeaveRequestComponent {
   ngOnInit(): void {
     this.userSubscription = this.userService.currentUser$
       .pipe(
-        tap(() => (this.isLoading = true)),
+        tap(() => {
+          this.isLoading = true;
+          this.leaveData = [];
+        }),
         switchMap((user) => {
           if (user) {
             return this.leaveService
               .getLeaveRequestsByEmployeeId(user.id)
-              .pipe(tap(() => (this.isLoading = false)));
+              .pipe(
+                delay(1000),
+                tap(() => (this.isLoading = false)),take(1));
           } else {
             this.isLoading = false;
             return [];
@@ -109,16 +114,20 @@ export class LeaveRequestComponent {
   }
 
   private refreshData() {
+    this.isLoading = true;
+    this.leaveData = [];
     this.userService.currentUser$
-      .pipe(take(1),
+      .pipe(
+        take(1),
         switchMap((user) => {
           if (user) {
-            this.isLoading = true;
-            this.leaveData=[];
             return this.leaveService
               .getLeaveRequestsByEmployeeId(user.id)
-              .pipe(tap(() => (this.isLoading = false)),take(1));
+              .pipe(
+                delay(1000),
+                tap(() => (this.isLoading = false)), take(1));
           }
+          this.isLoading = false;
           return [];
         })
       )
@@ -128,6 +137,8 @@ export class LeaveRequestComponent {
         },
         error: () => {
           this.leaveData = [];
+        },
+        complete: () => {
           this.isLoading = false;
         },
       });

@@ -32,11 +32,18 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
         if (errorContent.Message) {
           errorMessage = errorContent.Message;
         }
-
-        if (errorContent.errors) {
+        else if (errorContent.errors) {
           errorMessage = formatErrors(errorContent.errors);
         }
+        else if(error.status===500 || error.status===0){
+          errorMessage='Internal Server Error !.Please Try Again'
+        }
+        else if(error.status===404){
+          errorMessage='Not Found Error';
+        }
+        
       }
+      
 
       console.error('HTTP Error:', error);
       toastr.error(errorMessage);

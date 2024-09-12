@@ -8,7 +8,7 @@ import { LeaveReqeustCreationComponent } from './components/leaverequestcreation
 import { LeaveService } from '../../../core/services/leave/leave.service';
 import { CurrentUserService } from '../../../core/services/user/current-user-service.service';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-attendance-layout',
@@ -47,7 +47,7 @@ export class MyAttendanceLayoutComponent implements OnDestroy {
       if (data?.event === 'Create' && data.data) {
         this.userService.currentUser$.pipe(take(1)).subscribe(currentUser => {
           if (currentUser) {
-            this.leaveService.createLeaveRequest(data.data, currentUser.id).subscribe(()=>this.leaveService.emitLeaveRequestCreated());
+            this.leaveService.createLeaveRequest(data.data, currentUser.id).pipe(tap(()=>this.leaveService.emitLeaveRequestCreated())).subscribe();
           }
         });
       }

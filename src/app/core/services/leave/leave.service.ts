@@ -15,6 +15,7 @@ import { myLeaveRequest } from '../../models/interfaces/myLeaveRequest';
 import { TeamLeaveRegister } from '../../models/interfaces/TeamLeaveRegister';
 import { leaveRequestCreationData } from '../../models/interfaces/leaveRequestCreationData';
 import { BehaviorSubject } from 'rxjs';
+import { AI_BASE_URL, ANOMALY_DETECTION, FORECAST } from '../../constants/ai.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -66,5 +67,25 @@ export class LeaveService {
 
   emitLeaveRequestCreated(){
     this.leaveReqeustCreated.next(true);
+  }
+
+  getForecasting(employeeId:number){
+    return this.http.get(FORECAST+employeeId,{
+      headers:{
+        "ngrok-skip-browser-warning": "69420",
+        "access-control-allow-origin": "*"
+      },
+      responseType:'blob'
+    });
+  }
+
+  getAnomalyDetection(employeeId:number){
+    return this.http.get(ANOMALY_DETECTION+employeeId,{
+      headers:{
+        "ngrok-skip-browser-warning": "69420",
+        "access-control-allow-origin": "*"
+      },
+      responseType:'blob'
+    });
   }
 }

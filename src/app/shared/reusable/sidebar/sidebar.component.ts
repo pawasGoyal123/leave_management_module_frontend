@@ -40,9 +40,16 @@ export class SidebarComponent implements OnInit{
     {
       path: `${TEAM_ATTENDANCE}/${TEAM_LEAVE_REGISTER}`,
       label: "Team Register"
+    },
+    {
+      path:`${TEAM_ATTENDANCE}/forecasting`,
+      label:'Forecasting'
+    },
+    {
+      path:`${TEAM_ATTENDANCE}/anomaly-detection`,
+      label:'Anomaly Detection'
     }
   ];
-
 
   ngOnInit(): void {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {

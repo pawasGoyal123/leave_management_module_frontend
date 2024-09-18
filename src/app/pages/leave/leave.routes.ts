@@ -15,6 +15,8 @@ import { TeamleaveregisterComponent } from './teamleaveregister/teamleaveregiste
 import { MyAttendanceLayoutComponent } from './my-attendance-layout/my-attendance-layout.component';
 import { LeaveRequestComponent } from './leave-request/leave-request.component';
 import { LeaveRegisterComponent } from './leave-register/leave-register.component';
+import { ForecastingComponent } from '../forecasting/forecasting.component';
+import { AnomalyDetectionComponent } from '../anomaly-detection/anomaly-detection.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +29,14 @@ export const routes: Routes = [
       {
         path: TEAM_LEAVE_REGISTER,
         component: TeamleaveregisterComponent,
+      },
+      {
+        path:'forecasting',
+        component:ForecastingComponent
+      },
+      {
+        path:'anomaly-detection',
+        component:AnomalyDetectionComponent
       },
       {
         path: '',

@@ -1,42 +1,56 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CurrentUserService } from '../../core/services/user/current-user-service.service';
 import { LeaveService } from '../../core/services/leave/leave.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { take, tap } from 'rxjs';
-import { User } from '../../core/models/interfaces/User';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { Employee } from '../../core/models/interfaces/Employee';
 
 @Component({
   selector: 'app-anomaly-detection',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DropdownModule, FormsModule],
   templateUrl: './anomaly-detection.component.html',
   styleUrl: './anomaly-detection.component.scss',
 })
-export class AnomalyDetectionComponent {
+export class AnomalyDetectionComponent implements OnInit {
   constructor(
     private userService: CurrentUserService,
     private leaveService: LeaveService,
     private sanitizer: DomSanitizer
   ) {}
+  employees: Employee[] = [];
+  currentEmployee: Employee | null = null;
   isLoading: boolean = false;
   imageUrl!: SafeUrl;
   ngOnInit() {
-    this.userService.currentUser$
-      .pipe(tap(() => (this.isLoading = true)))
-      .subscribe((user: User | null) => {
-        if (user) {
-          this.leaveService
-            .getAnomalyDetection(user.id)
-            .pipe(
-              take(1),
-              tap(() => (this.isLoading = false))
-            )
-            .subscribe((data: Blob) => {
-              const objectURL = URL.createObjectURL(data);
-              this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
-            });
-        }
-      });
+    this.userService.currentUser$.subscribe((data) => {
+      if (data) {
+        this.leaveService
+          .getEmployeesByManagerId(data.id)
+          .pipe(take(1))
+          .subscribe((employee) => {
+            this.employees = employee;
+          });
+      }
+    });
+  }
+
+  changeCurrentEmployee() {
+    if (this.currentEmployee) {
+      this.isLoading = true;
+      this.leaveService
+        .getAnomalyDetection(this.currentEmployee.id)
+        .pipe(
+          take(1),
+          tap(() => (this.isLoading = false))
+        )
+        .subscribe((data) => {
+          const objectURL = URL.createObjectURL(data);
+          this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+        });
+    }
   }
 }

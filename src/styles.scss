@@ -66,3 +66,32 @@ button{
     border-radius: 20px;
     border: 2px none #ffffff;
   }
+
+  p-dropdown{
+    padding:8px 12px;
+  }
+
+  ::ng-deep .p-inputwrapper{
+    padding:8px 12px;
+  }
+
+  ::ng-deep .p-scroller-content{
+    min-width: 100%;
+  }
+
+  ::ng-deep .p-dropdown-item{
+    padding:8px 12px;
+  }
+
+  ::ng-deep .p-scroller{
+    width: 200px;
+  }
+
+  .no-user{
+    padding:8px 12px;
+    font-weight: 400;
+    font-size:20px;
+    color:#4B5563;
+    text-align: center;
+    width: 100%;
+  }

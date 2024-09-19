@@ -1,4 +1,18 @@
-<div class="loader-container" *ngIf="isLoading"><span class="loader" ></span></div>
-<div class="image-container" *ngIf="!isLoading">
-    <img [src]="imageUrl"  alt="Forecasting Data">
+
+<div class="parent-container">
+    <p-dropdown
+    [options]="employees"
+    [(ngModel)]="currentEmployee"
+    optionLabel="employeeName"
+    placeholder="Select a Employee"
+    (ngModelChange)="changeCurrentEmployee()"
+    [virtualScroll]="true"
+    [virtualScrollItemSize]="40"
+    [style]="{'minWidth':'100%'}"
+  >
+    </p-dropdown>
+    <span class="no-user" *ngIf="!currentEmployee">No user Selected please select a user to forecast</span>
+    <img [src]="imageUrl" *ngIf="imageUrl && employees.length && !isLoading"  alt="Forecasting Data">
+    
+    <div class="loader-container"><span class="loader" *ngIf="isLoading"></span></div>
 </div>

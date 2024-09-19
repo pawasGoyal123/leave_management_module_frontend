@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LeaveBalance } from '../../models/interfaces/leaveBalance';
 import {
+  GET_EMPLOYEES_BY_MANAGER_ID,
   GET_LEAVE_REGISTER_BALANCE,
   GET_LEAVE_TYPES,
   GET_TEAM_LEAVE_REGISTER,
@@ -16,6 +17,7 @@ import { TeamLeaveRegister } from '../../models/interfaces/TeamLeaveRegister';
 import { leaveRequestCreationData } from '../../models/interfaces/leaveRequestCreationData';
 import { BehaviorSubject } from 'rxjs';
 import { AI_BASE_URL, ANOMALY_DETECTION, FORECAST } from '../../constants/ai.constants';
+import { Employee } from '../../models/interfaces/Employee';
 
 @Injectable({
   providedIn: 'root',
@@ -87,5 +89,9 @@ export class LeaveService {
       },
       responseType:'blob'
     });
+  }
+
+  getEmployeesByManagerId(employeeId:number){
+    return this.http.get<Employee[]>(GET_EMPLOYEES_BY_MANAGER_ID+employeeId);
   }
 }

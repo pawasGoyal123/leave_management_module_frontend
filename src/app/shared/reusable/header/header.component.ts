@@ -33,16 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private userSubscription!: Subscription;
   showNotification = signal<boolean>(false);
   unreadCount: number = 0;
-  allUsers: User[] = [  {
-    "id": 1,
-    "name": "Ashu Garg",
-    "employeeCode": "E001"
-},
-{
-    "id": 2,
-    "name": "Gaurav Parasher",
-    "employeeCode": "E002"
-},];
+  allUsers: User[] = [];
 
   constructor(
     private userService: CurrentUserService,

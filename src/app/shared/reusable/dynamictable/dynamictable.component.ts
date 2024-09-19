@@ -19,12 +19,12 @@ import {
   PercentPipe,
 } from '@angular/common';
 import { DataPipe } from '../../pipes/datapipe.pipe';
-import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { TooltipOnOverflowDirective } from '../../directives/overflow.directive';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
+import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 
 @Component({
   selector: 'app-dynamictable',
@@ -52,7 +52,7 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() data: any[] = [];
-  @Input() columnMetaData: columnMetaDataType[] = [];
+  @Input() columnMetaData: ColumnMetaDataType[] = [];
   columnsToDisplay: string[] = [];
   @Input() loading!: boolean;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -109,7 +109,6 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onPageChange(event: PageEvent) {
-    console.log(event);
     this.getCurrentPage = event.pageIndex;
     this.pageSize = event.pageSize;
     this.iterator();
@@ -122,15 +121,15 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
     this.dataSource = new MatTableDataSource(part);
   }
 
-  getColumnType(column: columnMetaDataType) {
+  getColumnType(column: ColumnMetaDataType) {
     return column.type || '';
   }
 
-  getColumnTypeArgs(column: columnMetaDataType) {
+  getColumnTypeArgs(column: ColumnMetaDataType) {
     return column.typeArgs || [];
   }
 
-  getTemplate(column: columnMetaDataType): TemplateRef<any> | null {
+  getTemplate(column: ColumnMetaDataType): TemplateRef<any> | null {
     return column.template || null;
   }
 
@@ -148,7 +147,7 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
     return validClasses.join(' ');
   }
 
-  combineData(element: any, column: columnMetaDataType): string {
+  combineData(element: any, column: ColumnMetaDataType): string {
     if (!column.combineData) return '';
 
     const fields = column.combineData;
@@ -166,7 +165,7 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
     return combinedString;
   }
 
-  getTooltipText(element: any, column: columnMetaDataType): string {
+  getTooltipText(element: any, column: ColumnMetaDataType): string {
     let value: any;
 
     if (column.combineData) {
@@ -184,11 +183,11 @@ export class DynamictableComponent implements OnInit, OnChanges, AfterViewInit {
       : '';
   }
 
-  trackByColumn(index: number, column: columnMetaDataType): string {
+  trackByColumn(index: number, column: ColumnMetaDataType): string {
     return column.columnName || index.toString();
   }
 
-  getStatusClass(column: columnMetaDataType, value: string | undefined) {
+  getStatusClass(column: ColumnMetaDataType, value: string | undefined) {
     let ans = '';
     if (column.type === 'status' && value) {
       ans += `status-${value.toLowerCase()}`;

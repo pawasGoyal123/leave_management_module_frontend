@@ -7,7 +7,7 @@ export interface TeamLeaveRequest {
   secondHalf: boolean;
   reason: string;
   statusChangeDate: Date;
-  status: statusType;
+  status: StatusType;
 }
 
-export type statusType='Pending' | 'Approved' | 'Rejected';
+export type StatusType='Pending' | 'Approved' | 'Rejected';

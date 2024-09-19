@@ -1,12 +1,13 @@
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild, ChangeDetectorRef, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { DynamictableComponent } from '../../../shared/reusable/dynamictable/dynamictable.component';
 import { LeaveBalance } from '../../../core/models/interfaces/leaveBalance';
-import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
+
 import { Subscription } from 'rxjs';
 import { CurrentUserService } from '../../../core/services/user/current-user-service.service';
 import { LeaveService } from '../../../core/services/leave/leave.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 
 @Component({
   selector: 'app-leave-register',
@@ -18,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LeaveRegisterComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('buttonRef') buttonRef!: TemplateRef<any>;
-  columnMetaData: columnMetaDataType[] = [];
+  columnMetaData: ColumnMetaDataType[] = [];
   isLoading: boolean = false;
   leaveData: LeaveBalance[] = [];
   private userSubscription!: Subscription;
@@ -44,7 +45,7 @@ export class LeaveRegisterComponent implements AfterViewInit, OnInit, OnDestroy 
             this.leaveData = data;
             this.isLoading = false;
           },
-          error: (error: any) => {
+          error: (error:any) => {
             this.isLoading = false;
             this.leaveData = [];
           }

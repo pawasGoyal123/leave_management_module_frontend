@@ -1,4 +1,4 @@
-export type leaveRequestCreationData = {
+export type LeaveRequestCreationData = {
   fromDate: string;
   toDate: string;
   duration: string;

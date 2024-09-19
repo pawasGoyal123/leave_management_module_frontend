@@ -15,7 +15,9 @@ import { LeaveService } from '../../../../../../core/services/leave/leave.servic
 import { User } from '../../../../../../core/models/interfaces/User';
 import { CurrentUserService } from '../../../../../../core/services/user/current-user-service.service';
 import { delay, take, tap } from 'rxjs';
-import { leaveRequestCreationData } from '../../../../../../core/models/interfaces/leaveRequestCreationData';
+import { LeaveType } from '../../../../../../core/models/interfaces/leaveType';
+import { SelectInputOption } from '../../../../../../core/models/interfaces/selectOptionType';
+import { LeaveRequestCreationData } from '../../../../../../core/models/interfaces/leaveRequestCreationData';
 
 type DialogData = {
   message: string;
@@ -53,10 +55,10 @@ function dateToISOLikeButLocal(date: Date): string {
 })
 export class LeaveRequestCreationComponent implements OnInit {
   leaveRequestCreationForm!: FormGroup;
-  leaveTypes: any[] = [{ leaveType: 'Sick Leave' }];
+  leaveTypes: LeaveType[] = [];
   dialogLoading = false;
   currentUser: User | null = null;
-  leaveDurationData: any[] = [
+  leaveDurationData: SelectInputOption<string>[] = [
     {
       label: 'Full Day',
       value: 'Full Day'
@@ -66,7 +68,7 @@ export class LeaveRequestCreationComponent implements OnInit {
       value: 'Half Day'
     }
   ];
-  leaveHalfData: any[] = [
+  leaveHalfData: SelectInputOption<string>[] = [
     {
       label: 'First Half',
       value: 'First Half'
@@ -96,20 +98,14 @@ export class LeaveRequestCreationComponent implements OnInit {
     }, { validators: dateRangeValidator('fromDate', 'toDate') });
 
     this.leaveService.getLeaveTypes().subscribe(
-      (data: any) => {
+      (data: LeaveType[]) => {
         this.leaveTypes = data;
-      },
-      error => {
-        console.error('Failed to load leave types', error);
       }
     );
 
     this.userService.currentUser$.pipe(take(1)).subscribe(
       (data: User | null) => {
         this.currentUser = data;
-      },
-      error => {
-        console.error('Failed to load current user', error);
       }
     );
   }
@@ -121,7 +117,7 @@ export class LeaveRequestCreationComponent implements OnInit {
   sendData(): void {
     if (this.leaveRequestCreationForm.valid) {
       const data = this.leaveRequestCreationForm.value;
-      const obj: leaveRequestCreationData = {
+      const obj: LeaveRequestCreationData = {
         fromDate: dateToISOLikeButLocal(data.fromDate),
         toDate: dateToISOLikeButLocal(data.toDate),
         duration: data.duration,
@@ -133,7 +129,6 @@ export class LeaveRequestCreationComponent implements OnInit {
 
       this.dialogLoading = true;
       if (this.currentUser) {
-        console.log(obj,this.currentUser.id)
         this.leaveService.createLeaveRequest(obj, this.currentUser.id).pipe(
           delay(1000),
           tap(() => this.dialogLoading = false)
@@ -141,8 +136,7 @@ export class LeaveRequestCreationComponent implements OnInit {
           next: () => {
             this.dialogRef.close({created:'true'});
           },
-          error: (error) => {
-            console.error('Failed to submit leave request', error);
+          error: () => {
             this.dialogLoading=false;
           },
           complete: () => {

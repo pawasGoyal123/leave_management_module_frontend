@@ -2,14 +2,9 @@ import { HttpErrorResponse, HttpEvent, HttpEventType, HttpInterceptorFn, HttpRes
 import { catchError, map, tap, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { inject } from '@angular/core';
+import { formatErrors } from '../../shared/utils/formatErrors';
 
-function formatErrors(errors: { [key: string]: string[] }): string {
-  return Object.entries(errors)
-    .map(([category, messages]) => 
-      `${category}:\n${messages.join('\n')}`
-    )
-    .join('\n\n');
-}
+
 
 export const httpInterceptor: HttpInterceptorFn = (req, next) => {
   const toastr = inject(ToastrService);
@@ -44,8 +39,6 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
         
       }
       
-
-      console.error('HTTP Error:', error);
       toastr.error(errorMessage);
 
       return throwError(() => error);

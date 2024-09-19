@@ -6,7 +6,7 @@ export interface LeaveBalance{
     total_balance:number;
 }
 
-export const leaveBalanceLabels={
+export const LeaveBalanceLabels={
     'month_year':"Month & Year",
     'available':"Available",
     'accrued':"Accrued",

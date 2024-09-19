@@ -8,6 +8,7 @@ import {
   TEAM_LEAVE_REGISTER,
 } from '../../../core/constants/app.constants';
 import { filter } from 'rxjs';
+import { Route } from '../../../core/models/interfaces/routeType';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,7 +22,7 @@ export class SidebarComponent implements OnInit{
 
   constructor(private router:Router){};
 
-  routeData: any[] = [
+  routeData: Route<string,string>[] = [
     {
       path: TEAM_ATTENDANCE,
       label: 'Team Attendance',
@@ -32,7 +33,7 @@ export class SidebarComponent implements OnInit{
     }
   ];
 
-  childRouteData: any[] = [
+  childRouteData: Route<string,string>[] = [
     {
       path: `${TEAM_ATTENDANCE}/${TEAM_LEAVE_REQUEST}/`,
       label: "Team Leave Requests"

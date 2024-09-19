@@ -6,12 +6,12 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { delay, switchMap, take, tap } from 'rxjs/operators';
-import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
-import { myLeaveRequest } from '../../../core/models/interfaces/myLeaveRequest';
 import { LeaveService } from '../../../core/services/leave/leave.service';
 import { CurrentUserService } from '../../../core/services/user/current-user-service.service';
 import { DynamictableComponent } from '../../../shared/reusable/dynamictable/dynamictable.component';
 import { CommonModule } from '@angular/common';
+import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
+import { MyLeaveRequest } from '../../../core/models/interfaces/myLeaveRequest';
 
 @Component({
   selector: 'app-leave-request',
@@ -22,8 +22,8 @@ import { CommonModule } from '@angular/common';
 })
 export class LeaveRequestComponent {
   @ViewChild('buttonRef') buttonRef!: TemplateRef<any>;
-  columnMetaData: columnMetaDataType[] = [];
-  leaveData: myLeaveRequest[] = [];
+  columnMetaData: ColumnMetaDataType[] = [];
+  leaveData: MyLeaveRequest[] = [];
   isLoading: boolean = false;
 
   private userSubscription!: Subscription;
@@ -59,7 +59,7 @@ export class LeaveRequestComponent {
         })
       )
       .subscribe({
-        next: (leaveData: myLeaveRequest[]) => (this.leaveData = leaveData),
+        next: (leaveData: MyLeaveRequest[]) => (this.leaveData = leaveData),
         error: () => {
           this.leaveData = [];
           this.isLoading = false;
@@ -132,7 +132,7 @@ export class LeaveRequestComponent {
         })
       )
       .subscribe({
-        next: (leaveData: myLeaveRequest[]) => {
+        next: (leaveData: MyLeaveRequest[]) => {
           this.leaveData = leaveData;
         },
         error: () => {

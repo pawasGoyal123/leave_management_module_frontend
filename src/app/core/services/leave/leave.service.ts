@@ -8,16 +8,15 @@ import {
   GET_TEAM_LEAVE_REGISTER,
   GET_TEAM_LEAVE_REQUEST,
 } from '../../constants/api.constants';
-import {
-  statusType,
-  TeamLeaveRequest,
-} from '../../models/interfaces/teamLeaveRequest';
-import { myLeaveRequest } from '../../models/interfaces/myLeaveRequest';
-import { TeamLeaveRegister } from '../../models/interfaces/TeamLeaveRegister';
-import { leaveRequestCreationData } from '../../models/interfaces/leaveRequestCreationData';
+
 import { BehaviorSubject } from 'rxjs';
 import { AI_BASE_URL, ANOMALY_DETECTION, FORECAST } from '../../constants/ai.constants';
 import { Employee } from '../../models/interfaces/Employee';
+import { LeaveType } from '../../models/interfaces/leaveType';
+import { StatusType, TeamLeaveRequest } from '../../models/interfaces/teamLeaveRequest';
+import { MyLeaveRequest } from '../../models/interfaces/myLeaveRequest';
+import { TeamLeaveRegister } from '../../models/interfaces/TeamLeaveRegister';
+import { LeaveRequestCreationData } from '../../models/interfaces/leaveRequestCreationData';
 
 @Injectable({
   providedIn: 'root',
@@ -30,13 +29,13 @@ export class LeaveService {
     return this.http.get<LeaveBalance[]>(`${GET_LEAVE_REGISTER_BALANCE}${userId}`);
   }
 
-  getTeamLeaveRequest(userId: number, status: statusType) {
+  getTeamLeaveRequest(userId: number, status: StatusType) {
     return this.http.get<TeamLeaveRequest[]>(`${GET_TEAM_LEAVE_REQUEST}${userId}/${status}`);
   }
 
   updateLeaveRequest(
     leaveRequestId: number,
-    leaveStatus: statusType,
+    leaveStatus: StatusType,
     managerComment: string
   ) {
     const data = {
@@ -48,7 +47,7 @@ export class LeaveService {
   }
 
   getLeaveRequestsByEmployeeId(employeeId: number) {
-    return this.http.get<myLeaveRequest[]>(`${GET_TEAM_LEAVE_REQUEST}${employeeId}`);
+    return this.http.get<MyLeaveRequest[]>(`${GET_TEAM_LEAVE_REQUEST}${employeeId}`);
   }
 
   getTeamLeaveRegister(managerId: number) {
@@ -56,11 +55,10 @@ export class LeaveService {
   }
 
   getLeaveTypes() {
-    return this.http.get(GET_LEAVE_TYPES);
+    return this.http.get<LeaveType[]>(GET_LEAVE_TYPES);
   }
 
-  createLeaveRequest(data: leaveRequestCreationData, employeeId: number) {
-    console.log(data);
+  createLeaveRequest(data: LeaveRequestCreationData, employeeId: number) {
     return this.http.post(GET_TEAM_LEAVE_REQUEST, {
       ...data,
       employeeId,

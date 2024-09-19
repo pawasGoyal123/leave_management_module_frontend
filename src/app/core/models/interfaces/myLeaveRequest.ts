@@ -1,11 +1,11 @@
-import { statusType } from "./teamLeaveRequest";
+import { StatusType } from "./teamLeaveRequest";
 
-export type myLeaveRequest={
+export type MyLeaveRequest={
     id:number;
     fromDate:Date;
     toDate: Date;
     firstHalf: boolean;
     secondHalf: boolean;
-    status: statusType;
+    status: StatusType;
     managerComment: string | null
 }

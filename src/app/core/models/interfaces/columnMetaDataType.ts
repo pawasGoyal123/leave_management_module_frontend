@@ -1,6 +1,6 @@
 import { TemplateRef } from "@angular/core";
 
-export interface columnMetaDataType{
+export interface ColumnMetaDataType{
     label:string;
     columnName?:string;
     headerColumnClass?:string[];

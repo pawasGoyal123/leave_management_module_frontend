@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamictableComponent } from '../../../shared/reusable/dynamictable/dynamictable.component';
-import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
+
 import { TeamLeaveRegister } from '../../../core/models/interfaces/TeamLeaveRegister';
+import { User } from '../../../core/models/interfaces/User';
 import { LeaveService } from '../../../core/services/leave/leave.service';
 import { CurrentUserService } from '../../../core/services/user/current-user-service.service';
-import { lastValueFrom } from 'rxjs';
-import { User } from '../../../core/models/interfaces/User';
+import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 
 @Component({
   selector: 'app-teamleaveregister',
@@ -32,7 +32,7 @@ export class TeamleaveregisterComponent implements OnInit {
       })
     }
   
-  columnMetaData:columnMetaDataType[]=[
+  columnMetaData:ColumnMetaDataType[]=[
     {
       label:'Employee',
       columnName:'name',

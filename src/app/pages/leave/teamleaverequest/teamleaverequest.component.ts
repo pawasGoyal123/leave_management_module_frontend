@@ -12,9 +12,8 @@ import {
   RouterLink,
   RouterLinkActive,
 } from '@angular/router';
-import { columnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 import {
-  statusType,
+  StatusType,
   TeamLeaveRequest,
 } from '../../../core/models/interfaces/teamLeaveRequest';
 import { DynamictableComponent } from '../../../shared/reusable/dynamictable/dynamictable.component';
@@ -26,6 +25,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AcceptleaverequestComponent } from './components/acceptleaverequest/acceptleaverequest/acceptleaverequest.component';
 import { switchMap, tap, take } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
 
 @Component({
   selector: 'app-teamleaverequest',
@@ -37,8 +37,8 @@ import { of } from 'rxjs';
 export class TeamleaverequestComponent implements OnInit, AfterViewInit {
   @ViewChild('actionContainer') actionContainer!: TemplateRef<any>;
 
-  columnMetaData: columnMetaDataType[] = [];
-  status!: statusType;
+  columnMetaData: ColumnMetaDataType[] = [];
+  status!: StatusType;
   data: TeamLeaveRequest[] = [];
   routeData = TEAM_LEAVE_REQUEST_ROUTE;
   isLoading: boolean = false;
@@ -74,7 +74,6 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
         this.updateColumnMetaData();
       },
       error: (error: any) => {
-        console.error('Error fetching leave data:', error);
         this.data = [];
       }
     });
@@ -89,7 +88,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
     this.updateColumnMetaData();
   }
 
-  private mapStatus(status: string | null): statusType {
+  private mapStatus(status: string | null): StatusType {
     switch (status) {
       case 'pending':
         return 'Pending';
@@ -140,7 +139,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  accept(element: any): void {
+  accept(element:TeamLeaveRequest): void {
     const dialogRef = this.dialog.open(AcceptleaverequestComponent, {
       data: {
         message: 'Accept Request',
@@ -160,7 +159,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
     });
   }
 
-  reject(element: any): void {
+  reject(element: TeamLeaveRequest): void {
     const dialogRef = this.dialog.open(AcceptleaverequestComponent, {
       data: {
         message: 'Reject Request',
@@ -196,8 +195,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
       next: (teamLeaveRequest: TeamLeaveRequest[]) => {
         this.data = teamLeaveRequest;
       },
-      error: (error: any) => {
-        console.error('Error fetching leave data:', error);
+      error: () => {
         this.data = [];
       }
     });

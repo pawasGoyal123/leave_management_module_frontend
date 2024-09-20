@@ -50,7 +50,7 @@ export class MyAttendanceLayoutComponent implements OnDestroy {
     this.dialogSubscription = leaveCreationRef
       .afterClosed()
       .pipe()
-      .subscribe((data) => {
+      .subscribe((data:any) => {
         if (data?.created) {
           this.leaveService.emitLeaveRequestCreated();
         }

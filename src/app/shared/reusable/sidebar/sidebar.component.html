@@ -1,18 +1,25 @@
 <div class="sidebar">
-    <div class="sidebar-container">
-        
-        <a class="sidebar-item" [routerLink]="[item.path]" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact:false}"  *ngFor="let item of routeData">
-            <div class="dot"></div>
-            <span>{{item.label}}</span>
-        </a>
-       
-    </div>
-    <div class="sidebar-container" *ngIf="showTeamSubRoutes">
-        
-        <a class="sidebar-item" [routerLink]="[item.path]" [routerLinkActive]="'active'"  *ngFor="let item of childRouteData">
-            <div class="dot"></div>
-            <span>{{item.label}}</span>
-        </a>
-       
-    </div>
+  <div class="sidebar-container">
+    <a
+      class="sidebar-item"
+      [routerLink]="[item.path]"
+      [routerLinkActive]="'active'"
+      [routerLinkActiveOptions]="{ exact: false }"
+      *ngFor="let item of routeData"
+    >
+      <div class="dot"></div>
+      <span>{{ item.label }}</span>
+    </a>
+  </div>
+  <div class="sidebar-container" *ngIf="showTeamSubRoutes">
+    <a
+      class="sidebar-item"
+      [routerLink]="[item.path]"
+      [routerLinkActive]="'active'"
+      *ngFor="let item of childRouteData"
+    >
+      <div class="dot"></div>
+      <span>{{ item.label }}</span>
+    </a>
+  </div>
 </div>

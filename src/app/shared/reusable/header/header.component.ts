@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { DropdownModule } from 'primeng/dropdown';
-import { User } from '../../../core/models/interfaces/User';
-import { FormsModule } from '@angular/forms';
-import { CurrentUserService } from '../../../core/services/user/current-user-service.service';
 import { Subscription } from 'rxjs';
+import { NotificationType } from '../../../core/models/interfaces/notification';
+import { User } from '../../../core/models/interfaces/User';
+import { NotificationService } from '../../../core/services/notification/notification.service';
+import { CurrentUserService } from '../../../core/services/user/current-user-service.service';
 import { getUserProfileName } from '../../utils/getUserProfileName';
 import { NotificationComponent } from '../notification/notification.component';
-import { NotificationService } from '../../../core/services/notification/notification.service';
-import { NotificationType } from '../../../core/models/interfaces/notification';
 
 @Component({
   selector: 'app-header',
@@ -78,8 +78,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.showNotification.set(!this.showNotification());
   }
 
-  refreshNotifications($data:NotificationType[]){
-    this.unreadCount=$data.reduce((prev,curr)=>prev+(curr.status?0:1),0);
+  refreshNotifications($data: NotificationType[]) {
+    this.unreadCount = $data.reduce(
+      (prev, curr) => prev + (curr.status ? 0 : 1),
+      0
+    );
     this.toggleDisplay();
   }
 }

@@ -1,4 +1,4 @@
-.layout-container{
+.layout-container {
   height: 100%;
   align-items: center;
   justify-content: center;
@@ -6,6 +6,6 @@
   overflow: hidden;
 }
 
-::ng-deep .full-width{
-  flex:1 1 0% !important;
+::ng-deep .full-width {
+  flex: 1 1 0% !important;
 }

@@ -80,28 +80,27 @@
   flex-shrink: 0;
 }
 
-.active{
+.active {
   background-color: blue;
 }
 
-.date{
-    font-size: 10px;
-    font-weight: 500;
-    line-height: 10px;
-    color: rgb(147, 155, 169);
-    white-space: nowrap;
+.date {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 10px;
+  color: rgb(147, 155, 169);
+  white-space: nowrap;
 }
 
-.link{
-    color:blue;
-    font-weight: 500;
-    font-size:14px;
+.link {
+  color: blue;
+  font-weight: 500;
+  font-size: 14px;
 }
 
-.container{
+.container {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-grow: 1;
-
 }

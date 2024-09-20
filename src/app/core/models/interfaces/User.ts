@@ -1,5 +1,5 @@
-export interface User{
-    id:number;
-    name:string;
-    employeeCode:string;
+export type User = {
+  id: number;
+  name: string;
+  employeeCode: string;
 }

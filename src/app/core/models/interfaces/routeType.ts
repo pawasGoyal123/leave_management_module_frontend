@@ -1,4 +1,4 @@
 export type Route<TPath, TLabel> = {
-    path: TPath;
-    label: TLabel;
-  };
+  path: TPath;
+  label: TLabel;
+};

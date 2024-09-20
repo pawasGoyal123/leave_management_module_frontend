@@ -4,22 +4,27 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input'
+import { MatInputModule } from '@angular/material/input';
 
-type DialogData={
-  message:string;
-
-}
+type DialogData = {
+  message: string;
+};
 
 @Component({
   selector: 'app-acceptleaverequest',
   standalone: true,
-  imports: [MatDialogModule,MatFormFieldModule,FormsModule,MatButtonModule,MatInputModule,CdkTextareaAutosize],
+  imports: [
+    MatDialogModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatButtonModule,
+    MatInputModule,
+    CdkTextareaAutosize,
+  ],
   templateUrl: './acceptleaverequest.component.html',
-  styleUrl: './acceptleaverequest.component.scss'
+  styleUrl: './acceptleaverequest.component.scss',
 })
 export class AcceptleaverequestComponent {
-  name:string=''
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData){};
-
+  name: string = '';
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 }

@@ -1,30 +1,32 @@
 import {
-  Component,
-  Input,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-  TemplateRef,
-  ChangeDetectorRef,
-  ViewChild,
-  AfterViewInit,
-} from '@angular/core';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import {
   CommonModule,
   CurrencyPipe,
   DatePipe,
   DecimalPipe,
   PercentPipe,
 } from '@angular/common';
-import { DataPipe } from '../../pipes/datapipe.pipe';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { TooltipOnOverflowDirective } from '../../directives/overflow.directive';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
+import { DataPipe } from '../../pipes/datapipe.pipe';
 
 @Component({
   selector: 'app-dynamictable',
@@ -36,17 +38,9 @@ import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDa
     DataPipe,
     MatTooltipModule,
     MatIconModule,
-    TooltipOnOverflowDirective,
     MatPaginatorModule,
   ],
-  providers: [
-    CurrencyPipe,
-    DatePipe,
-    DecimalPipe,
-    PercentPipe,
-    DataPipe,
-    TooltipOnOverflowDirective,
-  ],
+  providers: [CurrencyPipe, DatePipe, DecimalPipe, PercentPipe, DataPipe],
   templateUrl: './dynamictable.component.html',
   styleUrls: ['./dynamictable.component.scss'],
 })

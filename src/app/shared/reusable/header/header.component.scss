@@ -1,111 +1,109 @@
-.header-container{
-    padding:6px 16px;
-    background-color: #F9FAFB;
-    width: 100%;
-    display: fixed;
-    border-bottom: 1px solid #E8EBED;
-    display: flex;
-    gap:8px;
-    align-items: center;
-    justify-content: space-between;
+.header-container {
+  padding: 6px 16px;
+  background-color: #f9fafb;
+  width: 100%;
+  display: fixed;
+  border-bottom: 1px solid #e8ebed;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
 }
-.flex-row{
-    display: flex;
-    align-items: center;
-    gap:12px;
+.flex-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .icon-display {
-    transform: scale(1.2);
- }
+  transform: scale(1.2);
+}
 
-   ng::deep mat-form-field{
-        margin: 0px !important;
-    }
-  .user-option {
-    display: flex;
-    align-items: center;
-  }
-  
-  
-  .user-option span {
-    font-size: 16px;
-    color: rgb(43, 52, 67);
-  }
+ng::deep mat-form-field {
+  margin: 0px !important;
+}
+.user-option {
+  display: flex;
+  align-items: center;
+}
 
-  .user-item{
-    padding:8px 12px;
-    white-space: nowrap;
-    font-size:14px;
-    width: 100%;
-    min-width: 100%;
-  }
+.user-option span {
+  font-size: 16px;
+  color: rgb(43, 52, 67);
+}
 
-  p-dropdown{
-    padding:8px 12px;
-  }
+.user-item {
+  padding: 8px 12px;
+  white-space: nowrap;
+  font-size: 14px;
+  width: 100%;
+  min-width: 100%;
+}
 
-  ::ng-deep .p-inputwrapper{
-    padding:8px 12px;
-  }
+p-dropdown {
+  padding: 8px 12px;
+}
 
-  .user-selected-item{
-    padding:0px !important;
-    width: auto;
-  }
+::ng-deep .p-inputwrapper {
+  padding: 8px 12px;
+}
 
-  .profile-logo{
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 14px;
-    display: flex;
-    background-color: rgb(100, 188, 229);
-    border-width: 1px;
-    border-color: rgb(224, 245, 255);
-    color:white;
-  }
+.user-selected-item {
+  padding: 0px !important;
+  width: auto;
+}
 
-  ::ng-deep .overlay-class{
-    inset: 0;
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.768);
-    display: flex !important;
-    justify-content: flex-end !important;
-  }
+.profile-logo {
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  display: flex;
+  background-color: rgb(100, 188, 229);
+  border-width: 1px;
+  border-color: rgb(224, 245, 255);
+  color: white;
+}
 
-  .parent-container{
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
+::ng-deep .overlay-class {
+  inset: 0;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.768);
+  display: flex !important;
+  justify-content: flex-end !important;
+}
 
-  .counter{
-    position: absolute;
-    top:-4px;
-    right:-4px;
-    background-color: blue;
-    padding:2px;
-    height: 20px;
-    aspect-ratio: 1 / 1;
-    color:white;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 99999px;
-    font-size:12px;
-  }
+.parent-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
-  ::ng-deep .p-scroller-content{
-    min-width: 100%;
-  }
+.counter {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: blue;
+  padding: 2px;
+  height: 20px;
+  aspect-ratio: 1 / 1;
+  color: white;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 99999px;
+  font-size: 12px;
+}
 
-  ::ng-deep .p-dropdown-item{
-    padding:8px 12px;
-  }
+::ng-deep .p-scroller-content {
+  min-width: 100%;
+}
 
-  ::ng-deep .p-scroller{
-    width: 200px;
-  }
+::ng-deep .p-dropdown-item {
+  padding: 8px 12px;
+}
 
+::ng-deep .p-scroller {
+  width: 200px;
+}

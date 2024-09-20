@@ -1,5 +1,9 @@
 <div class="table-container">
-  <mat-table [dataSource]="dataSource" class="mat-elevate custom-table" [ngClass]="{'table-grow':!loading && data.length!=0}">
+  <mat-table
+    [dataSource]="dataSource"
+    class="mat-elevate custom-table"
+    [ngClass]="{ 'table-grow': !loading && data.length != 0 }"
+  >
     <!-- Define your columns and cells here -->
     <ng-container
       *ngFor="let column of columnMetaData; trackBy: trackByColumn"
@@ -14,7 +18,10 @@
       <mat-cell
         *matCellDef="let element"
         [class]="getClass(column.rowColumnClass, column.commonColumnClass)"
-        [ngClass]="column.columnName && getStatusClass(column, element[column.columnName!])"
+        [ngClass]="
+          column.columnName &&
+          getStatusClass(column, element[column.columnName!])
+        "
         appTooltipOnOverflow
         [matTooltip]="getTooltipText(element, column)"
         [matTooltipPosition]="'left'"
@@ -33,15 +40,25 @@
             {{ combineData(element, column) }}
           </ng-container>
           <ng-container *ngIf="!column.combineData">
-            <ng-container *ngIf="column.columnName && column.type !== 'boolean'; else booleanData">
+            <ng-container
+              *ngIf="
+                column.columnName && column.type !== 'boolean';
+                else booleanData
+              "
+            >
               {{
                 element[column.columnName!]
                   | datapipe : getColumnType(column) : getColumnTypeArgs(column)
               }}
             </ng-container>
             <ng-template #booleanData>
-              <mat-icon *ngIf="column.columnName && element[column.columnName!]">done</mat-icon>
-              <mat-icon *ngIf="column.columnName && !element[column.columnName!]">remove_circle</mat-icon>
+              <mat-icon *ngIf="column.columnName && element[column.columnName!]"
+                >done</mat-icon
+              >
+              <mat-icon
+                *ngIf="column.columnName && !element[column.columnName!]"
+                >remove_circle</mat-icon
+              >
             </ng-template>
           </ng-container>
         </ng-template>
@@ -61,14 +78,21 @@
 
   <ng-template [ngIf]="!loading && dataSource.filteredData.length === 0">
     <div class="no-data-container">
-      <img src="./images/nodata.png" class="no-data" alt="">
+      <img src="./images/nodata.png" class="no-data" alt="" />
     </div>
   </ng-template>
 
-  <ng-template [ngIf]="!loading && data.length>0">
-    <mat-paginator #paginator [pageSize]="pageSize" [length]="totalSize" (page)="onPageChange($event)" [pageIndex]="getCurrentPage" [pageSizeOptions]="[20,50,100]"
-    showFirstLastButtons
-    aria-label="Select page for Table Data">
+  <ng-template [ngIf]="!loading && data.length > 0">
+    <mat-paginator
+      #paginator
+      [pageSize]="pageSize"
+      [length]="totalSize"
+      (page)="onPageChange($event)"
+      [pageIndex]="getCurrentPage"
+      [pageSizeOptions]="[20, 50, 100]"
+      showFirstLastButtons
+      aria-label="Select page for Table Data"
+    >
     </mat-paginator>
   </ng-template>
 </div>

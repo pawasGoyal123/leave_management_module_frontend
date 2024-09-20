@@ -1,4 +1,4 @@
-export interface Employee{
-    id:number;
-    employeeName:string;
-}
+export type Employee = {
+  id: number;
+  employeeName: string;
+};

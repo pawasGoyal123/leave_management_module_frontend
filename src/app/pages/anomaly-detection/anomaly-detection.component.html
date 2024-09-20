@@ -1,5 +1,5 @@
 <div class="parent-container">
-    <p-dropdown
+  <p-dropdown
     [options]="employees"
     [(ngModel)]="currentEmployee"
     optionLabel="employeeName"
@@ -7,11 +7,19 @@
     (ngModelChange)="changeCurrentEmployee()"
     [virtualScroll]="true"
     [virtualScrollItemSize]="40"
-    [style]="{'minWidth':'100%'}"
+    [style]="{ minWidth: '100%' }"
   >
-    </p-dropdown>
-    <span class="no-user" *ngIf="!currentEmployee">No user Selected please select a user to detect anomaly</span>
-    <img [src]="imageUrl" *ngIf="imageUrl && employees.length && !isLoading"  alt="Forecasting Data">
-    
-    <div class="loader-container"><span class="loader" *ngIf="isLoading"></span></div>
+  </p-dropdown>
+  <span class="no-user" *ngIf="!currentEmployee"
+    >No user Selected please select a user to detect anomaly</span
+  >
+  <img
+    [src]="imageUrl"
+    *ngIf="imageUrl && employees.length && !isLoading"
+    alt="Forecasting Data"
+  />
+
+  <div class="loader-container">
+    <span class="loader" *ngIf="isLoading"></span>
+  </div>
 </div>

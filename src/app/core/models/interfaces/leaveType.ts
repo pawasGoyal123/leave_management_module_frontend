@@ -1,3 +1,3 @@
-export interface LeaveType{
-    leaveType:string;
-}
+export type LeaveType = {
+  leaveType: string;
+};

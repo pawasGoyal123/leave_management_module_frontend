@@ -1,16 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {formatDistanceToNow} from 'date-fns'
 
 @Pipe({
   name: 'timeago',
-  standalone: true
+  standalone: true,
 })
 export class TimeagoPipe implements PipeTransform {
-
-  transform(date: Date | string): string {
+  transform(date: string): string {
     const now = new Date();
     const pastDate = new Date(date);
-    const differenceInSeconds = Math.floor((now.getTime() - pastDate.getTime()) / 1000);
+    const differenceInSeconds = Math.floor(
+      (now.getTime() - pastDate.getTime()) / 1000
+    );
 
     if (differenceInSeconds < 60) {
       return `${differenceInSeconds} seconds ago`;
@@ -20,17 +20,15 @@ export class TimeagoPipe implements PipeTransform {
     } else if (differenceInSeconds < 86400) {
       const differenceInHours = Math.floor(differenceInSeconds / 3600);
       return `${differenceInHours} hours ago`;
-    } else if (differenceInSeconds < 2592000) { 
+    } else if (differenceInSeconds < 2592000) {
       const differenceInDays = Math.floor(differenceInSeconds / 86400);
       return `${differenceInDays} days ago`;
-    } else if (differenceInSeconds < 31536000) { 
+    } else if (differenceInSeconds < 31536000) {
       const differenceInMonths = Math.floor(differenceInSeconds / 2592000);
       return `${differenceInMonths} months ago`;
     } else {
       const differenceInYears = Math.floor(differenceInSeconds / 31536000);
       return `${differenceInYears} years ago`;
     }
-  
   }
-
 }

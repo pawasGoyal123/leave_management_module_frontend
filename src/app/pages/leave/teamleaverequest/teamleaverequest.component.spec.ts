@@ -8,9 +8,8 @@ describe('TeamleaverequestComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TeamleaverequestComponent]
-    })
-    .compileComponents();
+      imports: [TeamleaverequestComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TeamleaverequestComponent);
     component = fixture.componentInstance;

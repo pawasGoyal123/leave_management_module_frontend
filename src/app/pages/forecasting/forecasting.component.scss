@@ -1,24 +1,24 @@
-.parent-container{
-    width:100%;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    gap:8px;
-    justify-content: start;
-    align-items: start;
+.parent-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: start;
+  align-items: start;
 }
 
-.image-container img{
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+.image-container img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
-.loader-container{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.loader-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

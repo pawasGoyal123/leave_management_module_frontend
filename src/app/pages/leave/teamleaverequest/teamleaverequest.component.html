@@ -11,7 +11,11 @@
     </div>
   </div>
   <div class="flex-grow">
-    <app-dynamictable [data]="data" [loading]="isLoading" [columnMetaData]="columnMetaData">
+    <app-dynamictable
+      [data]="data"
+      [loading]="isLoading"
+      [columnMetaData]="columnMetaData"
+    >
     </app-dynamictable>
   </div>
 </div>
@@ -21,4 +25,3 @@
     <button class="reject-btn" (click)="reject(row)">Reject</button>
   </div>
 </ng-template>
-

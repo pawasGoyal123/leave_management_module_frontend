@@ -1,27 +1,27 @@
 .layout-container {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .content-container {
-    display: flex;
-    flex: 1 1 auto;
-    width: 100%;
-    overflow: hidden;
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  overflow: hidden;
 }
 
 .sidebar-container {
-    flex: 0 0 auto;
-    height: 100%;
-    background-color: black;
-    overflow: hidden;
+  flex: 0 0 auto;
+  height: 100%;
+  background-color: black;
+  overflow: hidden;
 }
 
 .main-content-container {
-    flex: 1 1 auto;
-    height: 100%;
-    overflow-y: auto;
+  flex: 1 1 auto;
+  height: 100%;
+  overflow-y: auto;
 }

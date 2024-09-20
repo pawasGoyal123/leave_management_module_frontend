@@ -8,9 +8,8 @@ describe('AnomalyDetectionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AnomalyDetectionComponent]
-    })
-    .compileComponents();
+      imports: [AnomalyDetectionComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AnomalyDetectionComponent);
     component = fixture.componentInstance;

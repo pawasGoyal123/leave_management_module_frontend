@@ -1,4 +1,9 @@
-import { CurrencyPipe, DatePipe, DecimalPipe, PercentPipe } from '@angular/common';
+import {
+  CurrencyPipe,
+  DatePipe,
+  DecimalPipe,
+  PercentPipe,
+} from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -6,7 +11,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class DataPipe implements PipeTransform {
-
   constructor(
     private decimalPipe: DecimalPipe,
     private datePipe: DatePipe,
@@ -28,13 +32,4 @@ export class DataPipe implements PipeTransform {
         return value;
     }
   }
-
 }
-
-
-
-
-
-
-  
-

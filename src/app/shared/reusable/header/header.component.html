@@ -1,12 +1,4 @@
 <header class="header-container">
-  <!-- <app-select-component [label]="'Select User'" [data]="users" [displayKey]="'name'" [valueKey]="'employeeCode'">
-    <ng-template let-item>
-      <div class="custom-option">
-        <strong>{{ item.name }}</strong>
-      </div>
-    </ng-template>
-  </app-select-component> -->
-
   <p-dropdown
     [options]="allUsers"
     [(ngModel)]="currentUser"
@@ -15,19 +7,22 @@
     (ngModelChange)="changeActiveUser()"
     [virtualScroll]="true"
     [virtualScrollItemSize]="40"
-    [style]="{'minWidth':'100%'}"
+    [style]="{ minWidth: '100%' }"
   >
-    </p-dropdown>
+  </p-dropdown>
 
   <div class="flex-row">
     <div class="parent-container">
-      <button (click)="toggleDisplay()" >
+      <button (click)="toggleDisplay()">
         <mat-icon class="icon-display">notifications_none</mat-icon>
       </button>
-      <span class="counter" *ngIf="unreadCount>0" >{{unreadCount}}</span>
+      <span class="counter" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
     </div>
     <span class="profile-logo" *ngIf="currentUser">{{ ProfileName }}</span>
   </div>
 </header>
 
-<app-notification *ngIf="showNotification()" (close)="refreshNotifications($event)" ></app-notification>
+<app-notification
+  *ngIf="showNotification()"
+  (close)="refreshNotifications($event)"
+></app-notification>

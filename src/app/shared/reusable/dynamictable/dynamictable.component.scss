@@ -1,31 +1,30 @@
-@use '@angular/material' as mat;
-
+@use "@angular/material" as mat;
 
 .table-container {
   width: 100%;
-  height: 100%; 
-  max-height: 100%;    /* Ensure it takes the full height of its parent */
-  overflow: hidden;  /* Hide overflow to allow only the table to scroll */
+  height: 100%;
+  max-height: 100%; /* Ensure it takes the full height of its parent */
+  overflow: hidden; /* Hide overflow to allow only the table to scroll */
 }
 
 .custom-table {
   width: 100%;
   border-radius: 8px;
-  border: 1px solid #E8EBED;
+  border: 1px solid #e8ebed;
   border-collapse: collapse;
   box-sizing: border-box;
   display: block;
-  height:auto;
-  max-height: 80%; 
-  overflow-y: auto; 
+  height: auto;
+  max-height: 80%;
+  overflow-y: auto;
 }
 
-.table-grow{
+.table-grow {
   height: 80% !important;
 }
 
 mat-header-row {
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
   position: sticky;
   top: 0;
   z-index: 0;
@@ -72,7 +71,6 @@ mat-cell {
   color: rgb(52, 199, 89);
 }
 
-
 .status-approved {
   color: green !important;
 }
@@ -86,13 +84,13 @@ mat-cell {
 }
 
 .overflow-content {
-  white-space: nowrap;     
-  overflow: hidden;           
-  text-overflow: ellipsis;   
-  max-width: 300px !important; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px !important;
   min-width: 300px !important;
   display: block;
-  flex-shrink: 0 !important; 
+  flex-shrink: 0 !important;
 }
 
 .text-start {
@@ -110,7 +108,7 @@ mat-cell {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height:80%;
+  height: 80%;
   max-height: 80%;
 }
 
@@ -128,14 +126,14 @@ mat-cell {
   @include mat.elevation(8);
 }
 
-@media screen and (max-width:677px) {
-  .no-data-container{
+@media screen and (max-width: 677px) {
+  .no-data-container {
     height: 200px;
   }
 }
 
-::ng-deep .mdc-data-table__row:last-child .mat-mdc-cell{
+::ng-deep .mdc-data-table__row:last-child .mat-mdc-cell {
   border-bottom-style: solid !important;
-  border-color:#74777f !important;
+  border-color: #74777f !important;
   border-width: 1px !important;
 }

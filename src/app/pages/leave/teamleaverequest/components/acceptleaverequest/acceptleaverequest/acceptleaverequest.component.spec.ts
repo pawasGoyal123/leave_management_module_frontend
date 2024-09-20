@@ -8,9 +8,8 @@ describe('AcceptleaverequestComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AcceptleaverequestComponent]
-    })
-    .compileComponents();
+      imports: [AcceptleaverequestComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AcceptleaverequestComponent);
     component = fixture.componentInstance;

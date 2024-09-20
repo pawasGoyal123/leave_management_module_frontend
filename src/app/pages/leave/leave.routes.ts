@@ -1,22 +1,21 @@
 import { Routes } from '@angular/router';
 import {
-  TEAM_ATTENDANCE,
-  MY_ATTENDANCE,
-  TEAM_LEAVE_REQUEST,
-  TEAM_LEAVE_REGISTER,
-  STATUS_PARAM,
   LEAVE_REGISTER,
   LEAVE_REQUESTS,
-
+  MY_ATTENDANCE,
+  STATUS_PARAM,
+  TEAM_ATTENDANCE,
+  TEAM_LEAVE_REGISTER,
+  TEAM_LEAVE_REQUEST,
 } from '../../core/constants/app.constants';
 
-import { TeamleaverequestComponent } from './teamleaverequest/teamleaverequest.component';
-import { TeamleaveregisterComponent } from './teamleaveregister/teamleaveregister.component';
-import { MyAttendanceLayoutComponent } from './my-attendance-layout/my-attendance-layout.component';
-import { LeaveRequestComponent } from './leave-request/leave-request.component';
-import { LeaveRegisterComponent } from './leave-register/leave-register.component';
-import { ForecastingComponent } from '../forecasting/forecasting.component';
 import { AnomalyDetectionComponent } from '../anomaly-detection/anomaly-detection.component';
+import { ForecastingComponent } from '../forecasting/forecasting.component';
+import { LeaveRegisterComponent } from './leave-register/leave-register.component';
+import { LeaveRequestComponent } from './leave-request/leave-request.component';
+import { MyAttendanceLayoutComponent } from './my-attendance-layout/my-attendance-layout.component';
+import { TeamleaveregisterComponent } from './teamleaveregister/teamleaveregister.component';
+import { TeamleaverequestComponent } from './teamleaverequest/teamleaverequest.component';
 
 export const routes: Routes = [
   {
@@ -31,12 +30,12 @@ export const routes: Routes = [
         component: TeamleaveregisterComponent,
       },
       {
-        path:'forecasting',
-        component:ForecastingComponent
+        path: 'forecasting',
+        component: ForecastingComponent,
       },
       {
-        path:'anomaly-detection',
-        component:AnomalyDetectionComponent
+        path: 'anomaly-detection',
+        component: AnomalyDetectionComponent,
       },
       {
         path: '',

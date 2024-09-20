@@ -1,17 +1,23 @@
 <div class="layout-container">
-    <div class="static-container">
-        <h2 class="heading">My Attendance</h2>
-        <div class="flex-row">
-            <div class="navigation-container">
-                <a [routerLink]="[item.path]"  [routerLinkActive]="'active'" class="navigation-item" *ngFor="let item of routeData">{{item.label}}</a>
-            </div>
-            <button class="btn" (click)="openLeaveCreationDialog()">
-                <mat-icon>add</mat-icon>
-                <span>Leave Request</span>
-            </button>
-        </div>
+  <div class="static-container">
+    <h2 class="heading">My Attendance</h2>
+    <div class="flex-row">
+      <div class="navigation-container">
+        <a
+          [routerLink]="[item.path]"
+          [routerLinkActive]="'active'"
+          class="navigation-item"
+          *ngFor="let item of routeData"
+          >{{ item.label }}</a
+        >
+      </div>
+      <button class="btn" (click)="openLeaveCreationDialog()">
+        <mat-icon>add</mat-icon>
+        <span>Leave Request</span>
+      </button>
     </div>
-    <div class="main-content-container">
-        <router-outlet></router-outlet>
-    </div>
+  </div>
+  <div class="main-content-container">
+    <router-outlet></router-outlet>
+  </div>
 </div>

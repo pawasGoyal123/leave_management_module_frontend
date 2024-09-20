@@ -1,90 +1,88 @@
-:host{
-    height: 100%;
-    width: 100%;
-    overflow: none;
+:host {
+  height: 100%;
+  width: 100%;
+  overflow: none;
 }
-.parent-container{
-    display: flex;
-    flex-direction: column;
-    gap:8px;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-}
-
-.navigation-container{
-    display: flex;
-    align-items: center;
-    gap:8px;
-    background-color: rgb(232, 235, 237);
-    padding:4px;
-    border-radius: 4px;
+.parent-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
-.navigation-item{
-    font-size:13px;
-    font-weight: 600;
-    padding:3px 10px;
-    border-radius: 5px;
+.navigation-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgb(232, 235, 237);
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.navigation-item {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 5px;
 }
 a {
-    text-decoration: none;
-    color: rgb(105, 113, 134);
-    transition: all 0.4s ease-in-out 0s;
-    white-space: nowrap;
+  text-decoration: none;
+  color: rgb(105, 113, 134);
+  transition: all 0.4s ease-in-out 0s;
+  white-space: nowrap;
 }
 
-a:hover{
-    background-color: white;
-    color:rgb(43, 52, 67);
+a:hover {
+  background-color: white;
+  color: rgb(43, 52, 67);
 }
-.active{
-    background-color: white;
-    color:rgb(43, 52, 67);
-}
-
-.flex-row{
-    display: flex;
-    align-items: center;
-    gap:8px;
-    width: 100%;
-    justify-content: flex-start;
-    padding:8px;
+.active {
+  background-color: white;
+  color: rgb(43, 52, 67);
 }
 
-.action-container{
-    display: flex;
-    align-items: center;
-    gap:8px;
+.flex-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 8px;
 }
 
-.action-container button{
-    outline: none;
-    border:none;
+.action-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-container button {
+  outline: none;
+  border: none;
 }
 
 .accept-btn {
-    background-color: rgb(7, 212, 7);
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .reject-btn {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+  background-color: rgb(7, 212, 7);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-  .flex-grow{
-    height: 100%;
-    width: 100%;
-    padding:8px;
+.reject-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-  }
-  
+.flex-grow {
+  height: 100%;
+  width: 100%;
+  padding: 8px;
+}

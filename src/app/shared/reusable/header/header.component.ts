@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { DropdownModule } from 'primeng/dropdown';
-import { Subscription } from 'rxjs';
+import { Subscription, take, tap } from 'rxjs';
 import { NotificationType } from '../../../core/models/interfaces/notification';
 import { User } from '../../../core/models/interfaces/User';
 import { NotificationService } from '../../../core/services/notification/notification.service';
@@ -43,6 +43,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe((data: User[]) => {
       this.allUsers = data;
+      this.userService.currentUser$.pipe(take(1)).subscribe((data)=>{
+        if(data){
+          this.currentUser=data;
+        }
+        else{
+          this.currentUser=this.allUsers[0] ?? null;
+          this.userService.changeCurrentUser(this.currentUser);
+        }
+      })
     });
     this.userSubscription = this.userService.currentUser$.subscribe(
       (data: User | null) => {

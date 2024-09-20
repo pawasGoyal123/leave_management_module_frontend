@@ -51,11 +51,7 @@ export class SidebarComponent implements OnInit {
     {
       path: `${TEAM_ATTENDANCE}/forecasting`,
       label: 'Forecasting',
-    },
-    {
-      path: `${TEAM_ATTENDANCE}/anomaly-detection`,
-      label: 'Anomaly Detection',
-    },
+    }
   ];
 
   ngOnInit(): void {

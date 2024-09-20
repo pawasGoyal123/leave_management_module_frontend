@@ -30,6 +30,7 @@ import { SelectInputOption } from '../../../../../../core/models/interfaces/sele
 import { User } from '../../../../../../core/models/interfaces/User';
 import { LeaveService } from '../../../../../../core/services/leave/leave.service';
 import { CurrentUserService } from '../../../../../../core/services/user/current-user-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 type DialogData = {
   message: string;
@@ -103,7 +104,8 @@ export class LeaveRequestCreationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private leaveService: LeaveService,
     private dialogRef: MatDialogRef<LeaveRequestCreationComponent>,
-    private userService: CurrentUserService
+    private userService: CurrentUserService,
+    private toastr:ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -163,6 +165,7 @@ export class LeaveRequestCreationComponent implements OnInit {
           )
           .subscribe({
             next: () => {
+              this.toastr.success("Your leave request has been created successfully");
               this.dialogRef.close({ created: 'true' });
             },
             error: () => {

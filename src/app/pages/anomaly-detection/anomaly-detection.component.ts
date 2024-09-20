@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { DropdownModule } from 'primeng/dropdown';
-import { take, tap } from 'rxjs';
+import { catchError, finalize, take, tap } from 'rxjs';
 import { Employee } from '../../core/models/interfaces/Employee';
 import { LeaveService } from '../../core/services/leave/leave.service';
 import { CurrentUserService } from '../../core/services/user/current-user-service.service';
@@ -55,7 +55,7 @@ export class AnomalyDetectionComponent implements OnInit {
         .getAnomalyDetection(this.currentEmployee.id)
         .pipe(
           take(1),
-          tap(() => (this.isLoading = false))
+          finalize(()=>this.isLoading=false)
         )
         .subscribe((data) => {
           const objectURL = URL.createObjectURL(data);

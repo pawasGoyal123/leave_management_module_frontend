@@ -1,4 +1,4 @@
-export const BASE_URL='http://172.18.3.147:3000/api/';
+export const BASE_URL='http://localhost:5000/';
 export const LEAVE_MANAGEMENT_BASE=BASE_URL+'leavemanagement/';
 export const GET_EMPLOYEE_URL=LEAVE_MANAGEMENT_BASE+'employee';
 export const GET_LEAVE_REGISTER_BALANCE=LEAVE_MANAGEMENT_BASE+'leaveregister/';

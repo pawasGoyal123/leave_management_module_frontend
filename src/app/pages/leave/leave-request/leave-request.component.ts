@@ -1,19 +1,17 @@
-import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
-  OnDestroy,
-  OnInit,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { Subscription, merge, of } from 'rxjs';
-import { catchError, finalize, switchMap, take, tap } from 'rxjs/operators';
-import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
-import { MyLeaveRequest } from '../../../core/models/interfaces/myLeaveRequest';
+import { Subscription } from 'rxjs';
+import { delay, switchMap, take, tap } from 'rxjs/operators';
 import { LeaveService } from '../../../core/services/leave/leave.service';
 import { CurrentUserService } from '../../../core/services/user/current-user-service.service';
 import { DynamictableComponent } from '../../../shared/reusable/dynamictable/dynamictable.component';
+import { CommonModule } from '@angular/common';
+import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
+import { MyLeaveRequest } from '../../../core/models/interfaces/myLeaveRequest';
 
 @Component({
   selector: 'app-leave-request',
@@ -22,28 +20,60 @@ import { DynamictableComponent } from '../../../shared/reusable/dynamictable/dyn
   templateUrl: './leave-request.component.html',
   styleUrls: ['./leave-request.component.scss'],
 })
-export class LeaveRequestComponent implements OnInit, OnDestroy {
+export class LeaveRequestComponent {
   @ViewChild('buttonRef') buttonRef!: TemplateRef<any>;
-
   columnMetaData: ColumnMetaDataType[] = [];
   leaveData: MyLeaveRequest[] = [];
   isLoading: boolean = false;
 
-  private subscriptions = new Subscription();
+  private userSubscription!: Subscription;
 
   constructor(
     private userService: CurrentUserService,
     private leaveService: LeaveService,
-    private toastr: ToastrService
+    private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit() {
     this.initializeColumnMetaData();
-    this.setupSubscriptions();
+  }
+
+  ngOnInit(): void {
+    this.userSubscription = this.userService.currentUser$
+      .pipe(
+        tap(() => {
+          this.isLoading = true;
+          this.leaveData = [];
+        }),
+        switchMap((user) => {
+          if (user) {
+            return this.leaveService
+              .getLeaveRequestsByEmployeeId(user.id)
+              .pipe(
+                delay(1000),
+                tap(() => (this.isLoading = false)),take(1));
+          } else {
+            this.isLoading = false;
+            return [];
+          }
+        })
+      )
+      .subscribe({
+        next: (leaveData: MyLeaveRequest[]) => (this.leaveData = leaveData),
+        error: () => {
+          this.leaveData = [];
+          this.isLoading = false;
+        },
+      });
+
+    this.leaveService.leaveRequestCreated$.subscribe((data) => {
+      if(data){
+      this.refreshData();}
+    });
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe(); // Clean up all subscriptions
+    this.userSubscription?.unsubscribe();
   }
 
   private initializeColumnMetaData() {
@@ -76,65 +106,41 @@ export class LeaveRequestComponent implements OnInit, OnDestroy {
         columnName: 'managerComment',
         label: 'Manager Comment',
         commonColumnClass: ['overflow-content'],
+        rowColumnClass: [],
         tooltip: true,
       },
     ];
+    this.cd.detectChanges();
   }
 
-  private setupSubscriptions(): void {
-    // Observable to handle leave request creation event to refresh leave requests on creation of leave request
-    const leaveRequestCreated$ = this.leaveService.leaveRequestCreated$.pipe(
-      tap((data) => {
-        if (data) {
-          this.fetchLeaveRequests();
-        }
-      })
-    );
-
-    //fetching the leave requests when the user changes
-    const userChanges$ = this.userService.currentUser$.pipe(
-      tap((user) => {
-        if (!user) {
-          this.toastr.error('Please choose a user to fetch leave request data');
-        }
-      }),
-      switchMap((user) => (user ? this.fetchLeaveRequests() : of([])))
-    );
-
-    // Combine user changes and leave request creation observables for easy cleanup
-    this.subscriptions.add(
-      merge(userChanges$, leaveRequestCreated$)
-        .pipe(catchError(() => of([]))) // Handle any errors
-        .subscribe()
-    );
-  }
-
-  private fetchLeaveRequests() {
-    this.isLoading = true; // Start loading
-
-    return this.userService.currentUser$.pipe(
-      take(1),
-      switchMap((user) => {
-        if (user) {
-          return this.leaveService
-            .getLeaveRequestsByEmployeeId(user.id)
-            .pipe(take(1));
-        } else {
-          this.leaveData = []; // Reset leave data if no user is found
-          this.toastr.error('Please choose a user to fetch leave request data');
-          return of([]);
-        }
-      }),
-      tap((leaveData: MyLeaveRequest[]) => {
-        this.leaveData = leaveData;
-      }),
-      catchError(() => {
-        this.leaveData = []; // Reset leave data on error
-        return of([]);
-      }),
-      finalize(() => {
-        this.isLoading = false; // Stop loading on completion or error
-      })
-    );
+  private refreshData() {
+    this.isLoading = true;
+    this.leaveData = [];
+    this.userService.currentUser$
+      .pipe(
+        take(1),
+        switchMap((user) => {
+          if (user) {
+            return this.leaveService
+              .getLeaveRequestsByEmployeeId(user.id)
+              .pipe(
+                delay(1000),
+                tap(() => (this.isLoading = false)), take(1));
+          }
+          this.isLoading = false;
+          return [];
+        })
+      )
+      .subscribe({
+        next: (leaveData: MyLeaveRequest[]) => {
+          this.leaveData = leaveData;
+        },
+        error: () => {
+          this.leaveData = [];
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
   }
 }

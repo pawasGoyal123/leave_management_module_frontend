@@ -26,6 +26,7 @@ import { AcceptleaverequestComponent } from './components/acceptleaverequest/acc
 import { switchMap, tap, take } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ColumnMetaDataType } from '../../../core/models/interfaces/columnMetaDataType';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-teamleaverequest',
@@ -44,41 +45,38 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
   isLoading: boolean = false;
 
   constructor(
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
     private userService: CurrentUserService,
     private leaveService: LeaveService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toastr:ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap
-      .pipe(
-        switchMap((params) => {
-          const status = params.get('status');
-          this.setStatus(status);
-          return this.userService.currentUser$;
-        }),
-        switchMap((user) => {
-          if (user) {
-            this.isLoading = true;
-            this.data = [];
-            return this.leaveService.getTeamLeaveRequest(user.id, this.status);
-          }
-          return of([]); // Return an empty array if no user
-        }),
-        tap(() => (this.isLoading = false))
-      )
-      .subscribe({
-        next: (teamLeaveRequest: TeamLeaveRequest[]) => {
-          this.data = teamLeaveRequest;
-          this.updateColumnMetaData();
-        },
-        error: (error: any) => {
-          this.data = [];
-        },
-      });
+    this.activatedRoute.paramMap.pipe(
+      switchMap(params => {
+        const status = params.get('status');
+        this.setStatus(status);
+        return this.userService.currentUser$;
+      }),
+      switchMap(user => {
+        if (user) {
+          this.isLoading = true;
+          this.data=[];
+          return this.leaveService.getTeamLeaveRequest(user.id, this.status);
+        }
+        return of([]); // Return an empty array if no user
+      }),
+      tap(() => (this.isLoading = false))
+    ).subscribe({
+      next: (teamLeaveRequest: TeamLeaveRequest[]) => {
+        this.data = teamLeaveRequest;
+        this.updateColumnMetaData();
+      },
+      error: (error: any) => {
+        this.data = [];
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -123,7 +121,7 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
         columnName: 'reason',
         rowColumnClass: ['start'],
         hide: this.status !== 'Pending',
-        tooltip: true,
+        tooltip: true
       },
       {
         columnName: 'action',
@@ -141,27 +139,25 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  accept(element: TeamLeaveRequest): void {
+  accept(element:TeamLeaveRequest): void {
     const dialogRef = this.dialog.open(AcceptleaverequestComponent, {
       data: {
         message: 'Accept Request',
       },
       width: '60%',
     });
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((data) => {
-        if (data && data.action === 'Confirm') {
-          this.isLoading = true;
-          this.data = [];
-          this.leaveService
-            .updateLeaveRequest(element.id, 'Approved', data.data)
-            .subscribe(() => {
-              this.refreshLeaveRequests();
-            });
-        }
-      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((data) => {
+      if (data && data.action === 'Confirm') {
+        this.isLoading = true;
+        this.data=[];
+        this.leaveService
+          .updateLeaveRequest(element.id, 'Approved', data.data)
+          .subscribe(() => {
+            this.toastr.success("Leave request has been approved successfully");
+            this.refreshLeaveRequests();
+          });
+      }
+    });
   }
 
   reject(element: TeamLeaveRequest): void {
@@ -171,45 +167,40 @@ export class TeamleaverequestComponent implements OnInit, AfterViewInit {
       },
       width: '60%',
     });
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((data) => {
-        if (data && data.action === 'Confirm') {
-          this.isLoading = true;
-          this.data = [];
-          this.leaveService
-            .updateLeaveRequest(element.id, 'Rejected', data.data)
-            .subscribe(() => {
-              this.refreshLeaveRequests();
-            });
-        }
-      });
+    dialogRef.afterClosed().pipe(take(1)).subscribe((data) => {
+      if (data && data.action === 'Confirm') {
+        this.isLoading = true;
+        this.data=[];
+        this.leaveService
+          .updateLeaveRequest(element.id, 'Rejected', data.data)
+          .subscribe(() => {
+            this.toastr.success("Leave request has been rejected successfully");
+            this.refreshLeaveRequests();
+
+          });
+      }
+    });
   }
 
   private refreshLeaveRequests() {
     this.isLoading = true;
-    this.userService.currentUser$
-      .pipe(
-        take(1),
-        switchMap((user) => {
-          if (user) {
-            this.data = [];
-            return this.leaveService
-              .getTeamLeaveRequest(user.id, this.status)
-              .pipe(take(1));
-          }
-          return of([]);
-        }),
-        tap(() => (this.isLoading = false))
-      )
-      .subscribe({
-        next: (teamLeaveRequest: TeamLeaveRequest[]) => {
-          this.data = teamLeaveRequest;
-        },
-        error: () => {
+    this.userService.currentUser$.pipe(
+      take(1),
+      switchMap(user => {
+        if (user) {
           this.data = [];
-        },
-      });
+          return this.leaveService.getTeamLeaveRequest(user.id, this.status).pipe(take(1));
+        }
+        return of([]);
+      }),
+      tap(() => (this.isLoading = false))
+    ).subscribe({
+      next: (teamLeaveRequest: TeamLeaveRequest[]) => {
+        this.data = teamLeaveRequest;
+      },
+      error: () => {
+        this.data = [];
+      }
+    });
   }
 }

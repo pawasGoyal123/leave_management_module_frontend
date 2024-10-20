@@ -106,7 +106,7 @@ export class LeaveService {
     return this.http.get(FORECAST + employeeId, {
       headers: {
         'ngrok-skip-browser-warning': '69420',
-        'access-control-allow-origin': '*',
+        // 'access-control-allow-origin': '*',
       },
       responseType: 'blob',
     });
